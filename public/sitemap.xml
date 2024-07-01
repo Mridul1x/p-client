@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://www.mazzakagro.com/</loc>
+        <priority>1.0</priority>
+        <lastmod>2024-05-05</lastmod>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://mazzakagro.com/products</loc>
+        <priority>1</priority>
+        <lastmod>2023-04-27</lastmod>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://mazzakagro.com/products/nuts</loc>
+        <priority>1</priority>
+        <lastmod>2023-04-27</lastmod>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>https://www.mazzakagro.com/about</loc>
+        <priority>0.8</priority>
+        <lastmod>2023-05-05</lastmod>
+        <changefreq>monthly</changefreq>
+    </url>
+    <url>
+        <loc>https://www.mazzakagro.com/contact</loc>
+        <priority>0.8</priority>
+        <lastmod>2023-05-05</lastmod>
+        <changefreq>monthly</changefreq>
+    </url>
+</urlset>

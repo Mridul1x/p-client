@@ -1,0 +1,650 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.wrapper {
+  @apply container mx-auto px-5 lg:px-0;
+}
+
+.linear-walkaways {
+  @apply relative before:absolute before:top-1/2 before:left-0 before:w-0 before:h-[1px] before:bg-rose-500 hover:before:w-full before:duration-300;
+}
+
+.counting-bubble {
+  @apply absolute -right-2 bottom-0 bg-white w-4 h-4 rounded-full flex justify-center items-center text-black text-xs;
+}
+
+.product-title {
+  transition: all 0.3s ease-out;
+}
+
+.product-title:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* HOME SLIDE */
+.cta-btn {
+  @apply relative;
+}
+.cta-btn::before {
+  content: "";
+  @apply top-0 left-0 right-0 bottom-0 absolute bg-rose-900 w-0 duration-300 z-10;
+}
+
+.cta-btn:hover::before {
+  @apply w-full;
+}
+
+.slider {
+  @apply h-[calc(100vh-5rem)] flex duration-1000;
+}
+
+.navigators {
+  @apply absolute left-0 right-0 m-auto w-fit z-[1] text-2xl flex gap-10;
+}
+
+.navigators-btn {
+  @apply h-14 w-20 flex justify-center items-center bg-rose-900 text-rose-200 border border-rose-200 hover:bg-gray-900 hover:text-gray-200 hover:border-gray-200 duration-300;
+}
+
+.slide {
+  @apply w-screen h-full bg-center bg-no-repeat bg-cover;
+}
+
+.section-title {
+  @apply text-3xl lg:text-4xl uppercase font-semibold;
+}
+
+/* MOBILE NAV */
+
+.flexColMod {
+  @apply flex flex-col fixed z-[2] w-screen h-[calc(screen-5rem)] bg-white/80 text-black top-0 bottom-0 left-0 right-0 items-center justify-center text-xl gap-5 text-center backdrop-blur-xl uppercase;
+}
+
+.lock-scroll {
+  overflow: hidden;
+}
+
+/* CATEGORIES */
+.sq-nuts,
+.sq-seeds,
+.sq-berries,
+.sq-dates {
+  background-repeat: no-repeat;
+  background-size: cover;
+  @apply aspect-square flex items-center justify-center relative;
+}
+
+.sq-nuts {
+  background-image: url(https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/we64sz5wvz97zmnb0ngn);
+}
+
+.sq-seeds {
+  background-image: url(https://images.pexels.com/photos/41959/food-grains-bread-wheat-cereals-41959.jpeg?auto=compress&cs=tinysrgb&w=600);
+}
+
+.sq-berries {
+  background-image: url(https://images.pexels.com/photos/6287581/pexels-photo-6287581.jpeg?auto=compress&cs=tinysrgb&w=600);
+}
+
+.sq-dates {
+  background-image: url(https://images.pexels.com/photos/8758401/pexels-photo-8758401.jpeg?auto=compress&cs=tinysrgb&w=600);
+}
+
+.category-title-nuts,
+.category-title-seeds,
+.category-title-berries,
+.category-title-dates {
+  @apply text-6xl text-gray-100 font-medium uppercase z-20 hidden duration-500 ease-in-out;
+}
+
+.overlay {
+  @apply absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 duration-500 bg-gray-800 z-20 ease-in-out;
+}
+
+.sq-nuts:hover .overlay,
+.sq-seeds:hover .overlay,
+.sq-berries:hover .overlay,
+.sq-dates:hover .overlay {
+  opacity: 0.85;
+}
+
+.sq-nuts:hover .category-title-nuts,
+.sq-seeds:hover .category-title-seeds,
+.sq-berries:hover .category-title-berries,
+.sq-dates:hover .category-title-dates {
+  @apply block;
+}
+
+/* FOOTER AREA */
+
+.icon-circle {
+  @apply h-10 w-10 bg-[#8fc443] rounded-full flex items-center duration-300 cursor-pointer;
+}
+.icon-circle:hover {
+  @apply bg-[#8ec443bd];
+}
+
+.footer-nav-links {
+  @apply duration-300;
+}
+.footer-nav-links:hover {
+  @apply text-[rgb(143,196,67)] duration-300;
+}
+
+.social-icons {
+  @apply flex gap-4 mt-3 justify-center;
+}
+
+/* image gallery design */
+.grid-container {
+  margin: auto auto;
+  width: 100%;
+  height: 50rem;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+
+  grid-template-areas:
+    "   .    .      .    .     .  img3  img3  img3    .     .     .     . "
+    "  img1  img1   .    .     .  img3  img3  img3  img4  img4  img4   img4 "
+    "  img1  img1  img2 img2 img2 img3  img3  img3  img4  img4  img4   img4 "
+    "  img1  img1  img2 img2 img2 img3  img3  img3  img4  img4  img4   img4 "
+    "  img5  img5  img2 img2 img2 img3  img3  img3  img9  img9 img10   img10"
+    "  img5  img5  img6 img6 img7 img7  img8  img8  img9  img9 img10   img10"
+    "  img5  img5  img6 img6 img7 img7  img8  img8  img9  img9 img10   img10"
+    "  img5  img5  img6 img6 img7 img7  img8  img8   .     .   img10   img10"
+    "  .      .    img6 img6 img7 img7    .     .    .     .      .       . ";
+
+  gap: 1rem;
+  padding: 0.75rem 0rem;
+}
+
+.grid-container > div {
+  padding: 0.6rem 0rem;
+}
+
+.item1 {
+  grid-area: img1;
+}
+
+.item2 {
+  grid-area: img2;
+}
+
+.item3 {
+  grid-area: img3;
+}
+
+.item4 {
+  grid-area: img4;
+}
+
+.item5 {
+  grid-area: img5;
+}
+
+.item6 {
+  grid-area: img6;
+}
+
+.item7 {
+  grid-area: img7;
+}
+
+.item8 {
+  grid-area: img8;
+}
+
+.item9 {
+  grid-area: img9;
+}
+
+.item10 {
+  grid-area: img10;
+}
+
+/* Gallery Responsive Desing Starts*/
+@media only screen and (max-width: 1280px) {
+  .grid-container {
+    margin: 0 auto;
+    width: 65rem;
+    gap: 0.5rem;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .grid-container {
+    margin: 0 auto;
+    width: 100%;
+    height: 80%;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    display: grid;
+    grid-template-areas:
+      "img1  img1  img1  img1  img2  img2"
+      "img5  img5  img6  img6  img7  img7"
+      "img3  img3  img4  img4  img4  img4";
+
+    gap: 1rem;
+    padding: 0.75rem 0rem;
+  }
+
+  .item8 {
+    display: none;
+  }
+
+  .item9 {
+    display: none;
+  }
+
+  .item10 {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .grid-container {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    display: grid;
+    grid-template-areas:
+      "img1 img2"
+      "img3 img4";
+
+    gap: 1rem;
+    padding: 0.75rem 0rem;
+  }
+
+  .item5 {
+    display: none;
+  }
+
+  .item6 {
+    display: none;
+  }
+  .item7 {
+    display: none;
+  }
+
+  .item8 {
+    display: none;
+  }
+
+  .item9 {
+    display: none;
+  }
+
+  .item10 {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 468px) {
+  .grid-container {
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    display: grid;
+    grid-template-areas:
+      "img1"
+      "img2";
+    gap: 1rem;
+    padding: 0.75rem 0rem;
+  }
+
+  .item3 {
+    display: none;
+  }
+
+  .item4 {
+    display: none;
+  }
+
+  .item5 {
+    display: none;
+  }
+
+  .item6 {
+    display: none;
+  }
+
+  .item7 {
+    display: none;
+  }
+
+  .item8 {
+    display: none;
+  }
+
+  .item9 {
+    display: none;
+  }
+
+  .item10 {
+    display: none;
+  }
+}
+/* Gallery Responsive Desing Ends*/
+
+/* Cart design */
+@media screen and (max-width: 425px) {
+  .product-headlines {
+    grid-template-columns: repeat(12, minmax(auto-fill, 1fr));
+    gap: 5px;
+  }
+
+  .img {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+/* -- Testimonials -- */
+.carousel-root {
+  width: 64% !important;
+  margin: auto !important;
+  margin-top: 3% !important;
+}
+
+.carousel .slide {
+  background: #fff !important;
+  color: black;
+  height: 100%;
+}
+
+.carousel .slide img {
+  width: 139px !important;
+  border-radius: 50%;
+}
+
+.myCarousel {
+  background: #fafafa;
+  margin-top: -6%;
+  width: 54%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 6%;
+  padding-bottom: 8%;
+  padding-left: 5%;
+  padding-right: 5%;
+  border: 1px solid #ddd;
+  height: 286px;
+}
+
+.carousel .control-dots {
+  padding-left: 5px !important;
+  outline: 0;
+  bottom: 5% !important;
+}
+
+.myCarousel h3 {
+  color: #222;
+  font-weight: 100;
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 17px;
+}
+
+.myCarousel h4 {
+  text-transform: uppercase;
+  margin-top: 0;
+  padding-top: 0;
+  font-weight: 500;
+  color: #787878;
+  font-size: 14px;
+}
+
+.myCarousel p {
+  font-weight: 100 !important;
+  line-height: 29px !important;
+  color: #222;
+  font-size: 15px;
+  font-family: sans-serif;
+  max-height: 67px;
+}
+
+.myCarousel p:before {
+  content: "“";
+  color: #aaa;
+  font-size: 26px;
+  font-family: monospace;
+  font-weight: 100;
+}
+
+.myCarousel p:after {
+  content: "”";
+  color: #aaa;
+  font-size: 26px;
+  font-family: monospace;
+  font-weight: 100;
+  line-height: 0;
+}
+
+.carousel .control-dots .dot {
+  box-shadow: none !important;
+  background: #454545 !important;
+  outline: 0;
+}
+
+.carousel.carousel-slider .control-arrow {
+  background: #000 !important;
+  height: 50px !important;
+  position: absolute;
+  top: 35% !important;
+}
+
+@media only screen and (max-width: 934px) {
+  .carousel-root {
+    outline: 0;
+    width: 93% !important;
+    margin: auto !important;
+  }
+
+  .carousel.carousel-slider .control-arrow {
+    display: none !important;
+  }
+  .myCarousel {
+    background: #fafafa;
+    margin-top: -9%;
+    width: 88%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 8%;
+    padding-bottom: 12.5%;
+    padding-left: 5%;
+    padding-right: 5%;
+    border: 1px solid #ddd;
+    height: 269px;
+  }
+
+  .carousel .slide img {
+    width: 24% !important;
+    border-radius: 50%;
+  }
+}
+
+.blog-title {
+  background-image: url("https://images.pexels.com/photos/5792901/pexels-photo-5792901.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+}
+body,
+html {
+  height: 100%;
+}
+
+.parallax {
+  /* The image used */
+  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/v1714166251/gmzx4lhwdvoooiswvmdf.jpg");
+
+  /* Set a specific height */
+  /* Full height */
+  height: calc(100vh - 5rem);
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@media only screen and (max-device-width: 1366px) {
+  .parallax {
+    background-attachment: scroll !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .parallax {
+    height: calc(100vh - 15rem);
+  }
+}
+
+.parallax1 {
+  /* The image used */
+  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/bn4hs4t6n0nu0eyjx50a");
+
+  /* Set a specific height */
+  /* Full height */
+  height: 70vh;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@media only screen and (max-device-width: 1366px) {
+  .parallax1 {
+    background-attachment: scroll !important;
+  }
+}
+.parallax2 {
+  /* The image used */
+  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/kizvyhzjwkcdjyyfxvxj");
+
+  /* Set a specific height */
+  /* Full height */
+  height: 70vh;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: right;
+  background-repeat: repeat;
+  background-size: 50vw;
+}
+@media only screen and (max-width: 1366px) {
+  .parallax2 {
+    background-attachment: scroll; /* Disable fixed background on smaller screens */
+    height: 52vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+.parallax3 {
+  /* The image used */
+  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/u2gtcw4asmfmunwdu5bg");
+
+  /* Set a specific height */
+  /* Full height */
+  height: 70vh;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@media only screen and (max-width: 1366px) {
+  .parallax3 {
+    background-attachment: scroll; /* Disable fixed background on smaller screens */
+    height: 52vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.text-design-left::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: -10;
+  background-image: linear-gradient(
+    to right,
+    rgba(156, 11, 7, 0.981),
+    transparent
+  );
+  rotate: -3deg;
+}
+
+.card {
+  height: 20rem;
+  background: rgba(6, 182, 212, 0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+.card::before {
+  width: 100%;
+  height: 100%;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.card::after {
+  width: 100%;
+  height: 100%;
+  background-color: aqua;
+  background-image: linear-gradient(45deg, #f25a55, #ba2e29, #b93733, #9c0b07);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -2;
+  clip-path: circle(20% at 90% 10%);
+  transition: 0.2s;
+}
+
+.card:nth-child(2)::after {
+  background: #9be2ee;
+  background-image: linear-gradient(160deg, #9c0b07 0%, #f23b35 100%);
+}
+.card:nth-child(4)::after {
+  background: #9be2ee;
+  background-image: linear-gradient(160deg, #9c0b07 0%, #f23b35 100%);
+}
+
+.card:hover::after {
+  clip-path: circle(100%);
+  transition: all 2s;
+}
+.dropdown-menu {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 1024px) {
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform: none;
+  }
+}
