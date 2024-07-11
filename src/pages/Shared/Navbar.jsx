@@ -145,14 +145,12 @@ const Navbar = () => {
           </Link>
         )}
 
-        {userStore && userStore.role !== "admin" && (
-          <Link to="/cart" className="relative">
-            <span>
-              <BsBag />
-            </span>
-            <span className="counting-bubble">{products.length}</span>
-          </Link>
-        )}
+        <Link to="/cart" className="relative">
+          <span>
+            <BsBag />
+          </span>
+          <span className="counting-bubble">{products.length}</span>
+        </Link>
 
         <span className="z-[3]">
           <FiMenu

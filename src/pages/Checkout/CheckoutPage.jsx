@@ -27,17 +27,15 @@ const CheckoutPage = () => {
   const [promoCodeSuccess, setPromoCodeSuccess] = useState(false);
   const apiBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
   const token = useSelector((state) => state.user?.token);
-  // Handle shipping cost change
+
   const handleShippingCostChange = (event) => {
     setShippingCost(event.target.value === "inside" ? 70 : 130);
   };
 
-  // Handle payment method change
   const handlePaymentMethodChange = (event) => {
     setPaymentMethod(event.target.value);
   };
 
-  // Handle promo code change
   const handlePromoCodeChange = (event) => {
     const code = event.target.value.trim().toLowerCase();
     setPromoCode(code);
@@ -45,6 +43,7 @@ const CheckoutPage = () => {
     setPromoCodeSuccess(false);
     setDiscountedSubtotal(subtotal);
   };
+
   const handleMobileChange = (e) => {
     const value = e.target.value;
     setMobile(value);
@@ -67,7 +66,6 @@ const CheckoutPage = () => {
     }
   };
 
-  // Apply promo code
   const applyPromoCode = () => {
     const code = promoCode.trim().toLowerCase();
     if (code === "mazzak10" || code === "niloy10") {
@@ -80,28 +78,59 @@ const CheckoutPage = () => {
     }
   };
 
-  // Calculate total
   const subtotalNumber = parseFloat(
     discountedSubtotal.toString().replace(/[^0-9.-]+/g, "")
   );
   const totalInCents = subtotalNumber * 100 + shippingCost * 100;
   const total = totalInCents / 100;
 
-  // Format subtotal, shipping cost, and total with currency
   const formattedSubtotal = formatCurrency(subtotalNumber, "en-US", "BDT");
   const formattedShippingCost = formatCurrency(shippingCost, "en-US", "BDT");
   const formattedTotal = formatCurrency(total, "en-US", "BDT");
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     setShowLoadingOverlay(true);
 
-    // Simulate a 10-second loading time
-    setTimeout(() => {
+    if (paymentMethod === "cashOnDelivery") {
+      setTimeout(() => {
+        setIsLoading(true);
+        placeOrder();
+      }, 10000);
+    } else if (paymentMethod === "onlinePayment") {
       setIsLoading(true);
-      placeOrder();
-    }, 10000);
+      try {
+        const orderProducts = products.map((product) => ({
+          productId: product._id,
+          quantity: product.quantity,
+        }));
+        const newOrder = {
+          amountTotal: subtotalNumber + shippingCost,
+          amountShipping: shippingCost,
+          status: "pending",
+          mobile,
+          address,
+          userId: userStore._id,
+          products: orderProducts,
+        };
+
+        const { data } = await axios.post(
+          `${apiBaseUrl}/api/payment/ssl-request`,
+          newOrder,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        window.location.href = data.GatewayPageURL;
+      } catch (error) {
+        console.error("Error redirecting to SSLCommerz:", error);
+        setShowLoadingOverlay(false);
+        setIsLoading(false);
+      }
+    }
   };
 
   const placeOrder = async () => {
@@ -110,7 +139,6 @@ const CheckoutPage = () => {
         productId: product._id,
         quantity: product.quantity,
       }));
-      // Create a new order
       const newOrder = await axiosPost("/api/orders", {
         amountTotal: subtotalNumber + shippingCost,
         amountShipping: shippingCost,
@@ -121,7 +149,6 @@ const CheckoutPage = () => {
         products: orderProducts,
       });
 
-      // Update the user's orders
       await axios.put(
         `${apiBaseUrl}/api/users/${userStore._id}/orders`,
         {
@@ -134,7 +161,6 @@ const CheckoutPage = () => {
         }
       );
 
-      // Redirect to success page with order data
       navigate("/success", { state: { orderData: newOrder } });
     } catch (error) {
       console.error("Error placing order:", error);
@@ -143,11 +169,12 @@ const CheckoutPage = () => {
       setShowLoadingOverlay(false);
     }
   };
+
   const isFormValid =
     mobile.trim() !== "" &&
     address.trim() !== "" &&
     shippingCost !== 0 &&
-    paymentMethod === "cashOnDelivery" &&
+    (paymentMethod === "cashOnDelivery" || paymentMethod === "onlinePayment") &&
     mobileError === "" &&
     addressError === "";
 
@@ -222,9 +249,9 @@ const CheckoutPage = () => {
                 onChange={handleShippingCostChange}
                 required
               />
-              <span className="text-gray-700">Inside Dhaka ( 70 BDT )</span>
+              <span className="text-gray-700">Inside Dhaka: 70 BDT</span>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mt-2">
               <input
                 className="mr-2 leading-tight"
                 type="radio"
@@ -232,8 +259,9 @@ const CheckoutPage = () => {
                 value="outside"
                 checked={shippingCost === 130}
                 onChange={handleShippingCostChange}
+                required
               />
-              <span className="text-gray-700">Outside Dhaka ( 130 BDT )</span>
+              <span className="text-gray-700">Outside Dhaka: 130 BDT</span>
             </div>
           </div>
 
@@ -243,54 +271,59 @@ const CheckoutPage = () => {
               <input
                 className="mr-2 leading-tight"
                 type="radio"
+                name="paymentMethod"
                 value="cashOnDelivery"
                 checked={paymentMethod === "cashOnDelivery"}
                 onChange={handlePaymentMethodChange}
                 required
               />
-              <span className="text-gray-700">Cash On Delivery</span>
+              <span className="text-gray-700">Cash on Delivery</span>
             </div>
-          </div>
-          <div className="mb-8">
-            <h3 className="text-lg font-bold mb-2">
-              Promo Code{" "}
-              <span className="text-xs text-gray-500">
-                ( apply if you have one )
-              </span>
-            </h3>
-            <div className="flex items-center">
+            <div className="flex items-center mt-2">
               <input
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2 ${
-                  promoCodeError ? "border-red-500" : ""
-                }`}
-                type="text"
-                placeholder="Enter your promo code"
-                value={promoCode}
-                onChange={handlePromoCodeChange}
+                className="mr-2 leading-tight"
+                type="radio"
+                name="paymentMethod"
+                value="onlinePayment"
+                checked={paymentMethod === "onlinePayment"}
+                onChange={handlePaymentMethodChange}
+                required
               />
-              <p
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded cursor-pointer"
-                onClick={applyPromoCode}
-              >
-                Apply
-              </p>
+              <span className="text-gray-700">Online Payment</span>
             </div>
-            {promoCodeSuccess && (
-              <span className="text-green-500   animate-pulse">
-                Promo code applied!
-              </span>
-            )}
-            {promoCodeError && (
-              <span className="text-red-500 ">{promoCodeError}</span>
-            )}
           </div>
 
           <div className="mb-8">
+            <h3 className="text-lg font-bold mb-2">Promo Code</h3>
+            <div className="flex items-center">
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="promoCode"
+                type="text"
+                placeholder="Enter promo code"
+                value={promoCode}
+                onChange={handlePromoCodeChange}
+              />
+              <button
+                type="button"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2"
+                onClick={applyPromoCode}
+              >
+                Apply
+              </button>
+            </div>
+            {promoCodeError && (
+              <p className="text-red-500 mt-1">{promoCodeError}</p>
+            )}
+            {promoCodeSuccess && (
+              <p className="text-green-500 mt-1">Promo code applied!</p>
+            )}
+          </div>
+
+          <div className="mb-4">
             <h3 className="text-lg font-bold mb-2">Order Summary</h3>
-            <p className="text-gray-700 font-bold mb-2">
-              Subtotal: {formattedSubtotal}
-            </p>
-            <p className="text-gray-700 font-bold mb-2">
+            <p className="text-gray-700">Subtotal: {formattedSubtotal}</p>
+            <p className="text-gray-700">
               Shipping Cost: {formattedShippingCost}
             </p>
             <p className="text-gray-700 font-bold">Total: {formattedTotal}</p>
@@ -298,27 +331,26 @@ const CheckoutPage = () => {
 
           <div className="flex items-center justify-between">
             <button
-              className={`bg-[#ff7801] hover:bg-[#ff78018a]  text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
                 isLoading || !isFormValid ? "opacity-50 cursor-not-allowed" : ""
               }`}
               type="submit"
               disabled={isLoading || !isFormValid}
-              onClick={handleSubmit}
             >
-              {showLoadingOverlay ? (
-                <div className="flex items-center">
-                  <span className="mr-2">Placing Order</span>
-                  <NavbarOverlay />
-                </div>
-              ) : (
-                <span className="flex items-center">
-                  Place Order <SlArrowRight className="ms-2" />
-                </span>
-              )}
+              {isLoading ? "Processing..." : "Place Order"}
             </button>
           </div>
         </form>
       </div>
+
+      {showLoadingOverlay && (
+        <NavbarOverlay>
+          <div className="flex justify-center items-center h-full">
+            <SlArrowRight className="animate-spin h-8 w-8 text-white" />
+            <span className="ml-4 text-white">Processing your order...</span>
+          </div>
+        </NavbarOverlay>
+      )}
     </div>
   );
 };

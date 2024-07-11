@@ -12,7 +12,7 @@ import { signout } from "../../store/userSlice";
 const Profile = () => {
   const { logout, loading } = useContext(AuthContext);
   const userStore = useSelector((state) => state.user?.user);
-  console.log(userStore);
+  console.log(userStore.photoURL);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -49,7 +49,7 @@ const Profile = () => {
             src={userStore.photoURL}
             width={500}
             height={500}
-            alt={userStore.photoURL}
+            alt="Profile Picture"
             className="h-32 w-32 rounded-full border-2 border-gray-900"
           />
           <h2
