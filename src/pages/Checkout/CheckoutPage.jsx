@@ -25,7 +25,6 @@ const CheckoutPage = () => {
   const [discountedSubtotal, setDiscountedSubtotal] = useState(subtotal);
   const [promoCodeError, setPromoCodeError] = useState("");
   const [promoCodeSuccess, setPromoCodeSuccess] = useState(false);
-  const apiBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
   const token = useSelector((state) => state.user?.token);
 
   const handleShippingCostChange = (event) => {
@@ -113,18 +112,30 @@ const CheckoutPage = () => {
           userId: userStore._id,
           products: orderProducts,
         };
+        console.log(newOrder);
 
-        const { data } = await axios.post(
-          `${apiBaseUrl}/api/payment/ssl-request`,
-          newOrder,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        fetch("http://localhost:8080/api/payment/ssl-request", {
+          method: "POST",
+          headers: { "content-Type": "application/json" },
+          body: JSON.stringify(newOrder),
+        })
+          .then((res) => res.json())
+          .then((result) => {
+            console.log(result);
+          });
 
-        window.location.href = data.GatewayPageURL;
+        // const { data } = await axios.post(
+        //   "http://localhost:8080/api/payment/ssl-request",
+        //   newOrder,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //     },
+        //   }
+        // );
+        // console.log;
+        // data;
+        // window.location.href = data.GatewayPageURL;
       } catch (error) {
         console.error("Error redirecting to SSLCommerz:", error);
         setShowLoadingOverlay(false);
