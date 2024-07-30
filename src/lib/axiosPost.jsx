@@ -17,6 +17,8 @@ export const axiosPost = async (endpoint, data, token = "") => {
       return res.data;
     }
   } catch (error) {
-    toast.error(error.response?.data?.error);
+    console.error("Error response:", error.response);
+    toast.error(error.response?.data?.error || "An error occurred");
+    throw error;
   }
 };

@@ -144,13 +144,14 @@ const Navbar = () => {
             Profile
           </Link>
         )}
-
-        <Link to="/cart" className="relative">
-          <span>
-            <BsBag />
-          </span>
-          <span className="counting-bubble">{products.length}</span>
-        </Link>
+        {userStore && userStore.role === "user" && (
+          <Link to="/cart" className="relative">
+            <span>
+              <BsBag />
+            </span>
+            <span className="counting-bubble">{products.length}</span>
+          </Link>
+        )}
 
         <span className="z-[3]">
           <FiMenu

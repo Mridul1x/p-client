@@ -60,6 +60,24 @@ const Profile = () => {
           >
             Welcome, {userStore.name}!
           </h2>
+          <div className="flex flex-col items-center">
+            <p
+              data-aos="fade-up"
+              data-aos-delay="300"
+              data-aos-duration="1000"
+              className="text-gray-700"
+            >
+              Email: {userStore.email}
+            </p>
+            <p
+              data-aos="fade-up"
+              data-aos-delay="400"
+              data-aos-duration="1000"
+              className="text-gray-700"
+            >
+              Joined: {new Date(userStore.createdAt).toLocaleDateString()}
+            </p>
+          </div>
           <button
             data-aos="fade-up"
             data-aos-delay="300"

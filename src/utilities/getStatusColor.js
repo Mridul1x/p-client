@@ -4,6 +4,8 @@ export const getStatusColor = (status) => {
       return "text-green-500";
     case "pending":
       return "text-yellow-500";
+      case "failed":
+        return "text-red-500";
     default:
       return "text-gray-500";
   }

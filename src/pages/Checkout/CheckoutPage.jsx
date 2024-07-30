@@ -21,12 +21,11 @@ const CheckoutPage = () => {
   const [promoCode, setPromoCode] = useState("");
   const [mobileError, setMobileError] = useState("");
   const [addressError, setAddressError] = useState("");
-
   const [discountedSubtotal, setDiscountedSubtotal] = useState(subtotal);
   const [promoCodeError, setPromoCodeError] = useState("");
   const [promoCodeSuccess, setPromoCodeSuccess] = useState(false);
   const token = useSelector((state) => state.user?.token);
-
+  const apiBaseUrl = "http://localhost:5000";
   const handleShippingCostChange = (event) => {
     setShippingCost(event.target.value === "inside" ? 70 : 130);
   };
@@ -105,37 +104,30 @@ const CheckoutPage = () => {
         }));
         const newOrder = {
           amountTotal: subtotalNumber + shippingCost,
-          amountShipping: shippingCost,
+          amountShipping: shippingCost, // Ensure this is included
           status: "pending",
           mobile,
           address,
           userId: userStore._id,
           products: orderProducts,
+          paymentMethod: "Online Payment",
         };
         console.log(newOrder);
 
-        fetch("http://localhost:8080/api/payment/ssl-request", {
-          method: "POST",
-          headers: { "content-Type": "application/json" },
-          body: JSON.stringify(newOrder),
-        })
-          .then((res) => res.json())
-          .then((result) => {
-            console.log(result);
-          });
+        const result = await axiosPost(
+          "/api/payment/ssl-request",
+          newOrder,
+          token
+        );
 
-        // const { data } = await axios.post(
-        //   "http://localhost:8080/api/payment/ssl-request",
-        //   newOrder,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   }
-        // );
-        // console.log;
-        // data;
-        // window.location.href = data.GatewayPageURL;
+        if (result && result.url) {
+          console.log(result);
+          window.location.href = result.url;
+        } else {
+          console.error("Result does not contain URL:", result);
+          setShowLoadingOverlay(false);
+          setIsLoading(false);
+        }
       } catch (error) {
         console.error("Error redirecting to SSLCommerz:", error);
         setShowLoadingOverlay(false);
@@ -145,6 +137,7 @@ const CheckoutPage = () => {
   };
 
   const placeOrder = async () => {
+    const transactionID = "txn_" + new Date().getTime();
     try {
       const orderProducts = products.map((product) => ({
         productId: product._id,
@@ -158,6 +151,8 @@ const CheckoutPage = () => {
         address,
         userId: userStore._id,
         products: orderProducts,
+        transactionID, // Make sure this matches
+        paymentMethod: "Cash On Delivery",
       });
 
       await axios.put(
@@ -171,8 +166,7 @@ const CheckoutPage = () => {
           },
         }
       );
-
-      navigate("/success", { state: { orderData: newOrder } });
+      navigate(`/success/${transactionID}`, { state: { orderData: newOrder } });
     } catch (error) {
       console.error("Error placing order:", error);
     } finally {
@@ -218,6 +212,7 @@ const CheckoutPage = () => {
                 onChange={handleMobileChange}
                 required
                 pattern="[0-9]{11}"
+                maxLength={11}
               />
               {mobileError && (
                 <p className="text-red-500 mt-1">{mobileError}</p>

@@ -4,6 +4,40 @@
 @tailwind components;
 @tailwind utilities;
 
+/* BROWSER STYLES */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(143, 196, 66, 0.5);
+  height: 10%;
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #8fc442;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #1d232a;
+}
+
+::selection {
+  color: #1d232a;
+  background-color: #8fc442;
+}
+
+/* li {
+  color: white;
+} */
+
+html {
+  --scroll-behavior: smooth !important;
+  scroll-behavior: smooth !important;
+}
+
 .wrapper {
   @apply container mx-auto px-5 lg:px-0;
 }
@@ -23,6 +57,10 @@
 .product-title:hover {
   text-decoration: underline;
   text-underline-offset: 0.15em;
+}
+
+.section-padding {
+  @apply py-10 md:py-20;
 }
 
 /* HOME SLIDE */

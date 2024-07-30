@@ -1,12 +1,22 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { formatCurrency } from "../../utilities/formateCurrency";
 import { format } from "date-fns";
 import Overlay from "../../component/Overlay";
 import Error from "../../component/Error";
 import { getStatusColor } from "../../utilities/getStatusColor";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const UserOrders = () => {
   const userStore = useSelector((state) => state.user?.user);
@@ -17,6 +27,13 @@ const UserOrders = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const apiBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
+
+  // State for statistics
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [subtotalApproved, setSubtotalApproved] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [approvedCount, setApprovedCount] = useState(0);
+  const [failedCount, setFailedCount] = useState(0);
 
   useEffect(() => {
     const fetchUserOrders = async () => {
@@ -29,17 +46,51 @@ const UserOrders = () => {
             },
           }
         );
-        console.log(response.data);
+        console.log("Orders fetched:", response.data);
 
         const ordersData = Array.isArray(response.data) ? response.data : [];
 
         setOrders(ordersData);
         setIsLoading(false);
+
+        // Calculate statistics
+        calculateStatistics(ordersData);
       } catch (error) {
         setError(error.message);
         setIsLoading(false);
       }
     };
+
+    const calculateStatistics = (ordersData) => {
+      // Total orders
+      setTotalOrders(ordersData.length);
+
+      // Subtotal of approved items
+      const approvedOrders = ordersData.filter(
+        (order) => order.status === "approved"
+      );
+      const subtotal = approvedOrders.reduce((acc, order) => {
+        return acc + parseFloat(order.amountTotal.$numberDecimal);
+      }, 0);
+      setSubtotalApproved(subtotal);
+
+      // Pending items count
+      const pendingCount = ordersData.filter(
+        (order) => order.status === "pending"
+      ).length;
+      setPendingCount(pendingCount);
+
+      const failedCount = ordersData.filter(
+        (order) => order.status === "failed"
+      ).length;
+      setFailedCount(failedCount);
+
+      const approvedCount = ordersData.filter(
+        (order) => order.status === "approved"
+      ).length;
+      setApprovedCount(approvedCount);
+    };
+
     if (userStore) {
       fetchUserOrders();
     } else {
@@ -49,19 +100,11 @@ const UserOrders = () => {
   }, [userStore, navigate]);
 
   if (isLoading) {
-    return (
-      <div>
-        <Overlay />
-      </div>
-    );
+    return <Overlay />;
   }
 
   if (error) {
-    return (
-      <div>
-        <Error />
-      </div>
-    );
+    return <Error message={error} />;
   }
 
   if (!userStore) {
@@ -69,24 +112,68 @@ const UserOrders = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 min-h-screen">
-      <h2 className="section-title text-2xl font-bold mb-4 md:mb-8">
-        Your order{orders.length > 1 ? "s" : ""}: {orders.length}
-      </h2>
+    <div className="wrapper py-8 min-h-screen">
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold mb-2">Welcome, {userStore.name}!</h2>
+      </div>
+
+      {/* Display statistics */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="px-6 py-4">
+            <p className="text-lg text-gray-500 mb-2 font-bold">Total Orders</p>
+            <p className="text-2xl font-bold text-gray-800">{totalOrders}</p>
+          </div>
+        </div>
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="px-6 py-4">
+            <p className="text-lg text-gray-500 mb-2 font-bold">
+              Subtotal of Approved Items
+            </p>
+            <p className="text-2xl font-bold text-blue-500">
+              {formatCurrency(subtotalApproved)}
+            </p>
+          </div>
+        </div>
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="px-6 py-4">
+            <p className="text-lg text-gray-500 mb-2 font-bold">
+              Approved Items
+            </p>
+            <p className="text-2xl font-bold text-green-600">{approvedCount}</p>
+          </div>
+        </div>
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="px-6 py-4">
+            <p className="text-lg text-gray-500 mb-2 font-bold">
+              Pending Items
+            </p>
+            <p className="text-2xl font-bold text-yellow-600">{pendingCount}</p>
+          </div>
+        </div>
+        <div className="bg-white shadow-md rounded-lg overflow-hidden">
+          <div className="px-6 py-4">
+            <p className="text-lg text-gray-500 mb-2 font-bold">Failed Items</p>
+            <p className="text-2xl font-bold text-red-600">{failedCount}</p>
+          </div>
+        </div>
+      </div>
 
       {orders.length > 0 ? (
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
-          <div className="overflow-x-auto md:overflow-x-visible">
-            <table className="w-full mt-4 text-center">
+          <div className="overflow-x-auto overflow-y-auto max-h-96 md:overflow-x-visible">
+            <table className="w-full mt-4 text-left table-auto">
               <thead>
                 <tr className="uppercase border-b">
                   <th className="py-2 px-4">Order ID</th>
                   <th className="py-2 px-4">Products</th>
-                  <th className="py-2 px-4">Products QUANTITY</th>
+                  <th className="py-2 px-4">Quantity</th>
                   <th className="py-2 px-4">Shipping Cost</th>
                   <th className="py-2 px-4">Subtotal</th>
                   <th className="py-2 px-4">Date</th>
                   <th className="py-2 px-4">Status</th>
+                  <th className="py-2 px-4">Payment Method</th>
+                  <th className="py-2 px-4">Transaction ID</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,6 +217,12 @@ const UserOrders = () => {
                     >
                       {order.status.toUpperCase()}
                     </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      {order.paymentMethod}
+                    </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      {order.transactionID}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -150,6 +243,14 @@ const UserOrders = () => {
           </Link>
         </div>
       )}
+
+      {/* Back to top button
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-4 right-4 bg-white border border-gray-300 btn btn-xs rounded-md shadow-md hover:bg-gray-100 focus:outline-none"
+      >
+        Back to Top
+      </button> */}
     </div>
   );
 };

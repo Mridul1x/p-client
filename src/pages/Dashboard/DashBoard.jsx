@@ -42,7 +42,7 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
         accessor: "status",
         Cell: ({ row }) => (
           <div className="flex items-center">
-            <span className="mr-2 uppercase">{row.original.status}</span>
+            <span className="mr-2 capitalize">{row.original.status}</span>
             {row.original.status === "pending" && (
               <button
                 onClick={() =>
@@ -60,26 +60,28 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
     [handleUpdateOrderStatus]
   );
 
+  console.log(data);
+
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
   return (
-    <div>
-      <div className="flex justify-end">
+    <div className="overflow-hidden border border-gray-200 rounded-lg shadow-md ">
+      <div className="text-right p-4">
         <ExportToExcel data={data} fileName="orders" />
       </div>
-      <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
+      <div className="overflow-x-auto overflow-y-auto max-h-96">
         <table
           {...getTableProps()}
-          className="w-full mt-4 text-left border-collapse"
+          className="min-w-full bg-white divide-y divide-gray-200 table-auto"
         >
-          <thead>
+          <thead className="bg-gray-50 sticky top-0">
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps()}
-                    className="py-2 px-4 bg-gray-200 uppercase font-semibold text-sm "
+                    className="px-2 py-4 text-left text-sm font-semibold text-black uppercase tracking-wider"
                   >
                     {column.render("Header")}
                   </th>
@@ -87,19 +89,16 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
               </tr>
             ))}
           </thead>
-          <tbody {...getTableBodyProps()}>
+          <tbody
+            {...getTableBodyProps()}
+            className="divide-y divide-gray-200 text-sm text-gray-700"
+          >
             {rows.map((row) => {
               prepareRow(row);
               return (
-                <tr
-                  {...row.getRowProps()}
-                  className="border-b hover:bg-gray-100 duration-300"
-                >
+                <tr {...row.getRowProps()} className="hover:bg-gray-50">
                   {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className="py-3 px-4 whitespace-nowrap"
-                    >
+                    <td {...cell.getCellProps()} className="px-2 py-4 ">
                       {cell.render("Cell")}
                     </td>
                   ))}

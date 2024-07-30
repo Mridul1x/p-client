@@ -11,13 +11,14 @@ import Nuts from "../pages/ProductContainer/Nuts";
 import ProductDetails from "../pages/ProductContainer/ProductDetails";
 import CartPage from "../pages/Cart/CartPage";
 import CheckoutPage from "../pages/Checkout/CheckoutPage";
-import SuccessPage from "../pages/Checkout/Success";
 import AdminDashboard from "../pages/Dashboard/AdminDashboard";
 import PrivateRoute from "./PrivateRoute";
 import UserOrders from "../pages/Orders/UserOrder";
 import Seeds from "../pages/ProductContainer/Seeds";
 import Powder from "../pages/ProductContainer/Powder";
 import Dates from "../pages/ProductContainer/Dates";
+import Fail from "../pages/Checkout/Fail";
+import Success from "../pages/Checkout/Success";
 
 const router = createBrowserRouter([
   {
@@ -77,8 +78,12 @@ const router = createBrowserRouter([
         element: <CheckoutPage></CheckoutPage>,
       },
       {
-        path: "/success",
-        element: <SuccessPage></SuccessPage>,
+        path: "/success/:transactionID",
+        element: <Success></Success>,
+      },
+      {
+        path: "/fail/:transactionID",
+        element: <Fail></Fail>,
       },
       {
         path: "/dashboard",

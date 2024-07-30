@@ -1,58 +1,83 @@
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatCurrency } from "../../utilities/formateCurrency";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { clearCart } from "../../store/productSlice";
+import { useDispatch } from "react-redux"; // Uncomment if using Redux
+import { clearCart } from "../../store/productSlice"; // Uncomment if using Redux
+import { FaRegCheckCircle } from "react-icons/fa";
 
-const SuccessPage = () => {
-  const location = useLocation();
-  const orderData = location.state?.orderData;
-  const dispatch = useDispatch();
+const Success = () => {
+  const { transactionID } = useParams();
   const navigate = useNavigate();
+  const [orderData, setOrderData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(clearCart());
+    dispatch(clearCart()); // Uncomment if using Redux
 
-    // Redirect if there is no orderData
-    if (!orderData) {
+    if (!transactionID) {
       navigate("/", { replace: true });
     }
-  }, [dispatch, navigate, orderData]);
+
+    const fetchOrderData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/orders/${transactionID}`
+        );
+        setOrderData(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrderData();
+  }, [dispatch, navigate, transactionID]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div
-        className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6"
-        role="alert"
-      >
-        <p className="font-bold">Order Placed Successfully</p>
+      <div className="flex flex-col items-center">
+        <FaRegCheckCircle className="h-10 w-10 text-green-500 mb-4" />
+        <h2 className="text-2xl font-bold text-center mb-3">
+          Order Placed Successfully!
+        </h2>
+        <p className="text-gray-700 mb-3">Transaction ID: {transactionID}</p>
       </div>
-
       {orderData && (
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 w-full max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold mb-4">Order Details</h2>
           <div className="mb-4">
-            <p className="font-bold">Order ID:</p>
+            <p className="font-bold text-gray-800">Order ID:</p>
             <p>{orderData._id}</p>
           </div>
           <div className="mb-4">
-            <p className="font-bold">Total Amount:</p>
+            <p className="font-bold text-gray-800">Total Amount:</p>
             <p>{formatCurrency(orderData.amountTotal.$numberDecimal)}</p>
           </div>
           <div className="mb-4">
-            <p className="font-bold">Shipping Cost:</p>
+            <p className="font-bold text-gray-800">Shipping Cost:</p>
             <p>{formatCurrency(orderData.amountShipping.$numberDecimal)}</p>
           </div>
           <div className="mb-4">
-            <p className="font-bold">Address:</p>
+            <p className="font-bold text-gray-800">Address:</p>
             <p>{orderData.address}</p>
           </div>
           <div className="mb-4">
-            <p className="font-bold">Mobile:</p>
+            <p className="font-bold text-gray-800">Mobile:</p>
             <p>(+880) {orderData.mobile}</p>
           </div>
-
-          <div className="mt-2 text-center">
+          <div className="mt-8 text-center">
             <p className="text-gray-700 mb-4">
               Want to see all your order details? Visit the{" "}
               <Link
@@ -65,7 +90,7 @@ const SuccessPage = () => {
             </p>
             <Link
               to="/orders"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
             >
               View Orders
             </Link>
@@ -76,4 +101,4 @@ const SuccessPage = () => {
   );
 };
 
-export default SuccessPage;
+export default Success;
