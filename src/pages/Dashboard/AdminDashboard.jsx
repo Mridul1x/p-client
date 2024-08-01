@@ -8,16 +8,19 @@ import UserList from "./UserList";
 import DashboardTab from "./DashboardTab";
 import { MdCreateNewFolder, MdDashboard } from "react-icons/md";
 import { LiaHandsHelpingSolid } from "react-icons/lia";
+import CreateProduct from "./CreateProduct";
+import ProductList from "./ProductList";
+
 const AdminDashboard = () => {
   const [usersWithOrders, setUsersWithOrders] = useState([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(true);
   const token = useSelector((state) => state.user?.token);
   const apiBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
-  const { data: users, error, isLoading } = useFetch("/api/users", token);
   const [activeTab, setActiveTab] = useState("dashboard");
   const userStore = useSelector((state) => state.user?.user);
 
-  // Fetch users with orders
+  const { data: users, error, isLoading } = useFetch("/api/users", token);
+
   useEffect(() => {
     const fetchUsersWithOrders = async () => {
       if (users) {
@@ -47,7 +50,6 @@ const AdminDashboard = () => {
     fetchUsersWithOrders();
   }, [users, token]);
 
-  // Update order status
   const handleUpdateOrderStatus = async (orderId, status) => {
     try {
       const response = await axios.put(
@@ -72,7 +74,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Calculate pending orders count
   const getPendingOrdersCount = () => {
     let count = 0;
     usersWithOrders.forEach((user) => {
@@ -85,7 +86,6 @@ const AdminDashboard = () => {
     return count;
   };
 
-  // Calculate total approved orders amount
   const getTotalApprovedOrdersAmount = () => {
     let total = 0;
     usersWithOrders.forEach((user) => {
@@ -98,7 +98,22 @@ const AdminDashboard = () => {
     return total.toFixed(2);
   };
 
-  // Loading screen
+  const getApprovedItemsCount = () => {
+    let count = 0;
+    usersWithOrders.forEach((user) => {
+      user.orders.forEach((order) => {
+        if (order.status === "approved") {
+          count++;
+        }
+      });
+    });
+    return count;
+  };
+
+  const getTotalUsersCount = () => {
+    return users ? users.filter((user) => user.role === "user").length : 0;
+  };
+
   if (isLoading || isLoadingOrders) {
     return (
       <div>
@@ -107,7 +122,6 @@ const AdminDashboard = () => {
     );
   }
 
-  // Error screen
   if (error) {
     return (
       <div>
@@ -120,7 +134,7 @@ const AdminDashboard = () => {
     <main>
       <section className="section-padding">
         <h1 className="section-title text-center">Admin Dashboard</h1>
-        <div className="min-h-screen bg-black rounded-2xl overflow-hidden shadow-2xl border-2 border-black grid grid-cols-[20rem_auto] mt-4">
+        <div className="min-h-screen bg-black rounded-2xl overflow-hidden shadow-2xl border-2 border-black grid grid-cols-[20rem_auto] mt-4 mx-5">
           <aside className="bg-black flex justify-center p-10">
             <div className="flex flex-col gap-5 justify-start h-fit">
               <DashboardTab
@@ -155,6 +169,14 @@ const AdminDashboard = () => {
               >
                 {<MdCreateNewFolder />}
               </DashboardTab>
+              <DashboardTab
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                tabName="all-products"
+                placeholder="All Products"
+              >
+                {<MdCreateNewFolder />}
+              </DashboardTab>
             </div>
           </aside>
           <div className="py-10 px-5 bg-white ">
@@ -162,7 +184,7 @@ const AdminDashboard = () => {
               <div className=" min-h-screen px-5">
                 <h2 className="text-5xl mb-10 text-black font-semibold">
                   Welcome back,
-                  <span className="text-accent"> {userStore?.name}</span>.
+                  <span className="text-[#8fc442]"> {userStore?.name}</span>.
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-black">
                   <div className="bg-white p-6 rounded-lg shadow-2xl">
@@ -179,6 +201,18 @@ const AdminDashboard = () => {
                       BDT {getTotalApprovedOrdersAmount()}
                     </p>
                   </div>
+                  <div className="bg-white p-6 rounded-lg shadow-2xl">
+                    <h3 className="text-2xl font-semibold mb-4">
+                      Approved Items Count
+                    </h3>
+                    <p className="text-4xl">{getApprovedItemsCount()}</p>
+                  </div>
+                  <div className="bg-white p-6 rounded-lg shadow-2xl">
+                    <h3 className="text-2xl font-semibold mb-4">
+                      Total Users (Excluding Admin)
+                    </h3>
+                    <p className="text-4xl">{getTotalUsersCount()}</p>
+                  </div>
                 </div>
               </div>
             )}
@@ -191,6 +225,19 @@ const AdminDashboard = () => {
                 />
               </div>
             )}
+            {activeTab === "users" && (
+              <div className="w-full">
+                <h2 className="text-4xl font-bold mb-4 ">All Orders</h2>
+                <UserList users={users} />
+              </div>
+            )}
+
+            {activeTab === "create-product" && (
+              <div className="w-full">
+                <CreateProduct />
+              </div>
+            )}
+            {activeTab === "all-products" && <ProductList></ProductList>}
           </div>
         </div>
       </section>

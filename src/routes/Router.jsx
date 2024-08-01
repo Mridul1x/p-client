@@ -19,6 +19,7 @@ import Powder from "../pages/ProductContainer/Powder";
 import Dates from "../pages/ProductContainer/Dates";
 import Fail from "../pages/Checkout/Fail";
 import Success from "../pages/Checkout/Success";
+import Cancel from "../pages/Checkout/Cancel";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/fail/:transactionID",
         element: <Fail></Fail>,
+      },
+      {
+        path: "/cancel/:transactionID",
+        element: <Cancel></Cancel>,
       },
       {
         path: "/dashboard",

@@ -60,7 +60,7 @@ const ExportToExcel = ({ data, fileName }) => {
   return (
     <button
       onClick={exportToExcel}
-      className="bg-blue-500 hover:bg-blue-700 text-white mt-2 font-bold py-2 px-4 rounded"
+      className="bg-[#8fc442] hover:bg-[#90c442b4] text-white mt-2 font-bold py-2 px-4 rounded"
     >
       Export to Excel
     </button>

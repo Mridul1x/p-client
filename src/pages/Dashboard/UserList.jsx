@@ -3,14 +3,29 @@ import { useTable } from "react-table";
 import ExportToExcelUserList from "../../component/ExportToExcelUserList";
 
 const UserList = ({ users }) => {
-  const data = useMemo(
+  const adminData = useMemo(
     () =>
-      users.map((user) => ({
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        createdAt: new Date(user.createdAt).toLocaleDateString(),
-      })),
+      users
+        .filter((user) => user.role === "admin")
+        .map((user) => ({
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          createdAt: new Date(user.createdAt).toLocaleDateString(),
+        })),
+    [users]
+  );
+
+  const userData = useMemo(
+    () =>
+      users
+        .filter((user) => user.role !== "admin")
+        .map((user) => ({
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          createdAt: new Date(user.createdAt).toLocaleDateString(),
+        })),
     [users]
   );
 
@@ -24,57 +39,104 @@ const UserList = ({ users }) => {
     []
   );
 
-  console.log(data);
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  const adminTable = useTable({ columns, data: adminData });
+  const userTable = useTable({ columns, data: userData });
 
   return (
-    <div className="mt-10 overflow-hidden border border-gray-200 rounded-lg shadow-md">
-      <div className="flex justify-between p-4">
-        <h3 className="text-lg font-semibold">All Users</h3>
-        <ExportToExcelUserList data={data} fileName="All Users List" />
-      </div>
-      <div className="overflow-x-auto overflow-y-auto max-h-96 md:overflow-x-visible">
-        <table
-          {...getTableProps()}
-          className="min-w-full bg-white divide-y divide-gray-200 table-auto"
-        >
-          <thead className="bg-gray-50">
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column) => (
-                  <th
-                    {...column.getHeaderProps()}
-                    className="px-6 py-3 text-left text-sm font-semibold text-black uppercase tracking-wider"
-                  >
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody
-            {...getTableBodyProps()}
-            className="divide-y divide-gray-200 text-sm text-gray-700"
+    <div className="mt-10">
+      <div className="mb-6">
+        <div className="flex justify-between p-4">
+          <h3 className="text-lg font-semibold">Admin List</h3>
+        </div>
+        <div className="overflow-x-auto overflow-y-auto max-h-96 md:overflow-x-visible">
+          <table
+            {...adminTable.getTableProps()}
+            className="min-w-full bg-white divide-y divide-gray-200 table-auto"
           >
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} className="hover:bg-gray-50">
-                  {row.cells.map((cell) => (
-                    <td
-                      {...cell.getCellProps()}
-                      className="px-6 py-4 whitespace-nowrap"
+            <thead className="bg-gray-50">
+              {adminTable.headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps()}
+                      className="px-6 py-3 text-left text-sm font-semibold text-black uppercase tracking-wider"
                     >
-                      {cell.render("Cell")}
-                    </td>
+                      {column.render("Header")}
+                    </th>
                   ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              ))}
+            </thead>
+            <tbody
+              {...adminTable.getTableBodyProps()}
+              className="divide-y divide-gray-200 text-sm text-gray-700"
+            >
+              {adminTable.rows.map((row) => {
+                adminTable.prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()} className="hover:bg-gray-50">
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        className="px-6 py-4 whitespace-nowrap"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="mt-10 overflow-hidden border border-gray-200 rounded-lg shadow-md">
+        <div className="flex justify-between p-4">
+          <h3 className="text-lg font-semibold">All Users</h3>
+          <ExportToExcelUserList data={userData} fileName="All Users List" />
+        </div>
+        <div className="overflow-x-auto overflow-y-auto max-h-96 md:overflow-x-visible">
+          <table
+            {...userTable.getTableProps()}
+            className="min-w-full bg-white divide-y divide-gray-200 table-auto"
+          >
+            <thead className="bg-gray-50">
+              {userTable.headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th
+                      {...column.getHeaderProps()}
+                      className="px-6 py-3 text-left text-sm font-semibold text-black uppercase tracking-wider"
+                    >
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody
+              {...userTable.getTableBodyProps()}
+              className="divide-y divide-gray-200 text-sm text-gray-700"
+            >
+              {userTable.rows.map((row) => {
+                userTable.prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()} className="hover:bg-gray-50">
+                    {row.cells.map((cell) => (
+                      <td
+                        {...cell.getCellProps()}
+                        className="px-6 py-4 whitespace-nowrap"
+                      >
+                        {cell.render("Cell")}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

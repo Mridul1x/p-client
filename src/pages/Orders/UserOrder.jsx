@@ -46,7 +46,6 @@ const UserOrders = () => {
             },
           }
         );
-        console.log("Orders fetched:", response.data);
 
         const ordersData = Array.isArray(response.data) ? response.data : [];
 

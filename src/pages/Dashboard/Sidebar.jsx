@@ -36,6 +36,13 @@ const Sidebar = () => {
         >
           Create Product
         </NavLink>
+        <NavLink
+          to="/admin/all-products"
+          className="block px-4 py-2 hover:bg-gray-700"
+          activeClassName="bg-gray-900"
+        >
+          All Products
+        </NavLink>
       </nav>
     </div>
   );

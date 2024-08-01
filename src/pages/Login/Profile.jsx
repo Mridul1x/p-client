@@ -12,7 +12,7 @@ import { signout } from "../../store/userSlice";
 const Profile = () => {
   const { logout, loading } = useContext(AuthContext);
   const userStore = useSelector((state) => state.user?.user);
-  console.log(userStore.photoURL);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

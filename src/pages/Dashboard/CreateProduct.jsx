@@ -1,139 +1,119 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { toast } from "react-hot-toast";
+import { axiosPost } from "../../lib/axiosPost";
 import { useSelector } from "react-redux";
-import useFetch from "../../hooks/useFetch";
-import axios from "axios";
-import Overlay from "../../component/Overlay";
-import Dashboard from "./DashBoard";
-import UserList from "./UserList";
 
-const AdminDashboard = () => {
-  const [usersWithOrders, setUsersWithOrders] = useState([]);
-  const [isLoadingOrders, setIsLoadingOrders] = useState(true);
+const CreateProduct = () => {
   const token = useSelector((state) => state.user?.token);
-  const apiBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
-  const { data: users, error, isLoading } = useFetch("/api/users", token);
+  const [product, setProduct] = useState({
+    title: "",
+    price: "",
+    imageUrl: "",
+    category: "",
+    description: "",
+  });
 
-  // Fetch users with orders
-  useEffect(() => {
-    const fetchUsersWithOrders = async () => {
-      if (users) {
-        setIsLoadingOrders(true);
-        const usersWithOrdersData = await Promise.all(
-          users.map(async (user) => {
-            const response = await fetch(
-              `${apiBaseUrl}/api/users/${user._id}/orders`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            const orders = await response.json();
-            return {
-              ...user,
-              orders,
-            };
-          })
-        );
-        setUsersWithOrders(usersWithOrdersData);
-        setIsLoadingOrders(false);
-      }
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: value,
+    }));
+  };
 
-    fetchUsersWithOrders();
-  }, [users, token]);
-
-  // Update order status
-  const handleUpdateOrderStatus = async (orderId, status) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await axios.put(
-        `${apiBaseUrl}/api/orders/update-status`,
-        { orderId, status },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setUsersWithOrders((prevUsersWithOrders) =>
-        prevUsersWithOrders.map((user) => ({
-          ...user,
-          orders: user.orders.map((order) =>
-            order._id === orderId ? response.data : order
-          ),
-        }))
-      );
+      const data = await axiosPost("/api/products", product, token);
+
+      toast.success("Product created successfully!");
+      // Reset form
+      setProduct({
+        title: "",
+        price: "",
+        imageUrl: "",
+        category: "",
+        description: "",
+      });
     } catch (error) {
-      console.error("Error updating order status:", error);
+      console.error("Error creating product:", error);
     }
   };
 
-  // Calculate pending orders count
-  const getPendingOrdersCount = () => {
-    let count = 0;
-    usersWithOrders.forEach((user) => {
-      user.orders.forEach((order) => {
-        if (order.status === "pending") {
-          count++;
-        }
-      });
-    });
-    return count;
-  };
-
-  // Calculate total approved orders amount
-  const getTotalApprovedOrdersAmount = () => {
-    let total = 0;
-    usersWithOrders.forEach((user) => {
-      user.orders.forEach((order) => {
-        if (order.status === "approved") {
-          total += parseFloat(order.amountTotal.$numberDecimal);
-        }
-      });
-    });
-    return total.toFixed(2);
-  };
-
-  // Loading screen
-  if (isLoading || isLoadingOrders) {
-    return (
-      <div>
-        <Overlay />
-      </div>
-    );
-  }
-
-  // Error screen
-  if (error) {
-    return (
-      <div>
-        <Error />
-      </div>
-    );
-  }
-
   return (
-    <div className="wrapper min-h-screen my-20">
-      <div className="flex justify-between mb-4">
-        <h2 className="text-xl lg:text-4xl uppercase font-bold lg:font-semibold">
-          Admin Dashboard
-        </h2>
-        <div>
-          <span className="bg-red-500 text-white px-2 py-1 rounded-md mr-2">
-            Pending: {getPendingOrdersCount()}
-          </span>
-          <span className="bg-green-500 text-white px-2 py-1 rounded-md">
-            Total Approved Items: BDT {getTotalApprovedOrdersAmount()}
-          </span>
+    <div className="mx-auto p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold mb-6">Create New Product</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-gray-700">Title</label>
+          <input
+            type="text"
+            name="title"
+            value={product.title}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg"
+            required
+          />
         </div>
-      </div>
-      <Dashboard
-        usersWithOrders={usersWithOrders}
-        handleUpdateOrderStatus={handleUpdateOrderStatus}
-      />
-      <UserList users={users} />
+        <div className="mb-4">
+          <label className="block text-gray-700">Price</label>
+          <input
+            type="number"
+            name="price"
+            value={product.price}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Image URL</label>
+          <input
+            type="text"
+            name="imageUrl"
+            value={product.imageUrl}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Category</label>
+          <select
+            name="category"
+            value={product.category}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg"
+            required
+          >
+            <option value="" disabled>
+              Select a category
+            </option>
+            <option value="Nuts">Nuts</option>
+            <option value="Seed">Seed</option>
+            <option value="Powder">Powder</option>
+            <option value="Date">Date</option>
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Description</label>
+          <textarea
+            name="description"
+            value={product.description}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg"
+            required
+          ></textarea>
+        </div>
+        <button
+          type="submit"
+          className="w-full bg-[#8fc442] hover:bg-[#90c442d3] text-white font-bold py-2 px-4 rounded-lg"
+        >
+          Create Product
+        </button>
+      </form>
     </div>
   );
 };
 
-export default AdminDashboard;
+export default CreateProduct;

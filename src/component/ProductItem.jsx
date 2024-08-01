@@ -14,11 +14,13 @@ const ProductItem = ({ product }) => {
       <span className="uppercase text-xs tracking-widest font-semibold">
         {product.category}
       </span>
-      <h3 className="product-title text-2xl font-medium  h-[2.8rem]">
-        {product.title}{"  "}
-        <span className="uppercase text-lg font-medium tracking-widest">
-          (150gm)
-        </span>
+      <h3 className="product-title text-2xl font-medium h-[2.8rem]">
+        {product.title}
+        {product.category === "Nuts" && (
+          <span className="uppercase text-lg font-medium tracking-widest">
+             {" "}(150gm)
+          </span>
+        )}
       </h3>
       <p className="text-gray-500 h-[5rem]">
         {product.description?.split(".")[0]}.

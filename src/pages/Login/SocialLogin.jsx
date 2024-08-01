@@ -14,7 +14,6 @@ const SocialLogin = () => {
   const dispatch = useDispatch();
 
   const userStore = useSelector((state) => state.user?.user);
-  console.log(userStore);
 
   useEffect(() => {
     if (userStore) {
@@ -26,7 +25,7 @@ const SocialLogin = () => {
     try {
       const result = await googleAuth();
       const user = result.user;
-      console.log(user);
+
       const saveUser = {
         name: user.displayName,
         email: user.email,
@@ -35,7 +34,7 @@ const SocialLogin = () => {
       const data = await axiosPost("/api/users", saveUser);
       if (data) {
         const { result, token } = data;
-        await dispatch(login({ user: result, token }));
+        dispatch(login({ user: result, token }));
         console.log(data);
         const from = location.state?.from?.pathname || "/profile";
         navigate(from, { replace: true });

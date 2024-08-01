@@ -11,7 +11,6 @@ import { Helmet } from "react-helmet";
 const Products = ({ isAddedInHomepage }) => {
   const { user } = useContext(AuthContext);
   const marginClass = `${isAddedInHomepage ? "mt-40" : "mt-20"}`;
-
   const {
     data: products,
     error,

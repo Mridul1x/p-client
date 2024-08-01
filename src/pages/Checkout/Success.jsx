@@ -46,7 +46,7 @@ const Success = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 min-h-screen">
       <div className="flex flex-col items-center">
         <FaRegCheckCircle className="h-10 w-10 text-green-500 mb-4" />
         <h2 className="text-2xl font-bold text-center mb-3">

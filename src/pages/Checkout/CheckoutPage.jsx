@@ -112,7 +112,6 @@ const CheckoutPage = () => {
           products: orderProducts,
           paymentMethod: "Online Payment",
         };
-        console.log(newOrder);
 
         const result = await axiosPost(
           "/api/payment/ssl-request",
@@ -121,7 +120,6 @@ const CheckoutPage = () => {
         );
 
         if (result && result.url) {
-          console.log(result);
           window.location.href = result.url;
         } else {
           console.error("Result does not contain URL:", result);
