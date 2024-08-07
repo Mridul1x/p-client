@@ -18,7 +18,7 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/products");
+      const response = await axios.get("http://localhost:5050/api/products");
       console.log(response.data);
       setProducts(response.data);
     } catch (error) {

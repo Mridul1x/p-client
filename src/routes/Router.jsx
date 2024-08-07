@@ -20,6 +20,7 @@ import Dates from "../pages/ProductContainer/Dates";
 import Fail from "../pages/Checkout/Fail";
 import Success from "../pages/Checkout/Success";
 import Cancel from "../pages/Checkout/Cancel";
+import UserRoute from "./UserRoute";
 
 const router = createBrowserRouter([
   {
@@ -80,15 +81,27 @@ const router = createBrowserRouter([
       },
       {
         path: "/success/:transactionID",
-        element: <Success></Success>,
+        element: (
+          <UserRoute>
+            <Success></Success>
+          </UserRoute>
+        ),
       },
       {
         path: "/fail/:transactionID",
-        element: <Fail></Fail>,
+        element: (
+          <UserRoute>
+            <Fail></Fail>
+          </UserRoute>
+        ),
       },
       {
         path: "/cancel/:transactionID",
-        element: <Cancel></Cancel>,
+        element: (
+          <UserRoute>
+            <Cancel></Cancel>
+          </UserRoute>
+        ),
       },
       {
         path: "/dashboard",

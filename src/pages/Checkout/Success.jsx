@@ -5,6 +5,8 @@ import { formatCurrency } from "../../utilities/formateCurrency";
 import { useDispatch } from "react-redux"; // Uncomment if using Redux
 import { clearCart } from "../../store/productSlice"; // Uncomment if using Redux
 import { FaRegCheckCircle } from "react-icons/fa";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import OrderPDF from "../../component/OrderPdf";
 
 const Success = () => {
   const { transactionID } = useParams();
@@ -24,7 +26,7 @@ const Success = () => {
     const fetchOrderData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/orders/${transactionID}`
+          `http://localhost:5050/api/orders/${transactionID}`
         );
         setOrderData(response.data);
       } catch (err) {
@@ -90,10 +92,21 @@ const Success = () => {
             </p>
             <Link
               to="/orders"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 me-2"
             >
               View Orders
             </Link>
+            <PDFDownloadLink
+              document={
+                <OrderPDF orderData={orderData} transactionID={transactionID} />
+              }
+              fileName={`order_${transactionID}.pdf`}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? "Generating PDF..." : "Download PDF"
+              }
+            </PDFDownloadLink>
           </div>
         </div>
       )}
