@@ -78,7 +78,7 @@ const UserList = ({ users }) => {
                     {row.cells.map((cell) => (
                       <td
                         {...cell.getCellProps()}
-                        className="px-6 py-4 whitespace-nowrap"
+                        className="px-6 py-4 whitespace-nowrap text-base font-medium"
                       >
                         {cell.render("Cell")}
                       </td>
@@ -126,7 +126,7 @@ const UserList = ({ users }) => {
                     {row.cells.map((cell) => (
                       <td
                         {...cell.getCellProps()}
-                        className="px-6 py-4 whitespace-nowrap"
+                        className="px-6 py-4 whitespace-nowrap text-base font-medium"
                       >
                         {cell.render("Cell")}
                       </td>

@@ -45,7 +45,7 @@ const CreateProduct = () => {
       <h2 className="text-2xl font-bold mb-6">Create New Product</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700">Title</label>
+          <label className="block font-semibold text-gray-700">Title</label>
           <input
             type="text"
             name="title"
@@ -56,7 +56,7 @@ const CreateProduct = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Price</label>
+          <label className="block font-semibold text-gray-700">Price</label>
           <input
             type="number"
             name="price"
@@ -67,7 +67,7 @@ const CreateProduct = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Image URL</label>
+          <label className="block font-semibold text-gray-700">Image URL</label>
           <input
             type="text"
             name="imageUrl"
@@ -78,7 +78,7 @@ const CreateProduct = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Category</label>
+          <label className="block font-semibold text-gray-700">Category</label>
           <select
             name="category"
             value={product.category}
@@ -96,7 +96,7 @@ const CreateProduct = () => {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Description</label>
+          <label className="block font-semibold text-gray-700">Description</label>
           <textarea
             name="description"
             value={product.description}

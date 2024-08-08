@@ -17,6 +17,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import OrderTracking from "./OrderTracking";
 
 const UserOrders = () => {
   const userStore = useSelector((state) => state.user?.user);
@@ -158,6 +159,14 @@ const UserOrders = () => {
         </div>
       </div>
 
+      {/* Render Order Tracking for the first order
+      {orders.length > 0 && (
+        <OrderTracking
+          status={orders[0].status}
+          transactionID={orders[0].transactionID}
+        />
+      )} */}
+
       {orders.length > 0 ? (
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
           <div className="overflow-x-auto overflow-y-auto max-h-96 md:overflow-x-visible">
@@ -186,7 +195,7 @@ const UserOrders = () => {
                       <ul>
                         {order.products.map((product) => (
                           <li key={product.productId._id}>
-                            {product.productId.title || "N/A"}
+                            {product?.productId?.title || "N/A"}
                           </li>
                         ))}
                       </ul>
@@ -194,7 +203,7 @@ const UserOrders = () => {
                     <td className="py-3 px-4 whitespace-nowrap">
                       <ul>
                         {order.products.map((product) => (
-                          <li key={product.productId._id}>
+                          <li key={product?.productId?._id}>
                             {product.quantity}
                           </li>
                         ))}

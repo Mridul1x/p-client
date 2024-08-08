@@ -191,13 +191,15 @@ const AdminDashboard = () => {
                     <h3 className="text-2xl font-semibold mb-4">
                       Pending Orders
                     </h3>
-                    <p className="text-4xl">{getPendingOrdersCount()}</p>
+                    <p className="text-4xl text-yellow-600">
+                      {getPendingOrdersCount()}
+                    </p>
                   </div>
                   <div className="bg-white p-6 rounded-lg shadow-2xl">
                     <h3 className="text-2xl mb-4 font-semibold">
                       Subtotal Of Approved Items:
                     </h3>
-                    <p className="text-4xl">
+                    <p className="text-4xl text-green-600">
                       BDT {getTotalApprovedOrdersAmount()}
                     </p>
                   </div>
@@ -205,13 +207,17 @@ const AdminDashboard = () => {
                     <h3 className="text-2xl font-semibold mb-4">
                       Approved Items Count
                     </h3>
-                    <p className="text-4xl">{getApprovedItemsCount()}</p>
+                    <p className="text-4xl text-green-800">
+                      {getApprovedItemsCount()}
+                    </p>
                   </div>
                   <div className="bg-white p-6 rounded-lg shadow-2xl">
                     <h3 className="text-2xl font-semibold mb-4">
                       Total Users (Excluding Admin)
                     </h3>
-                    <p className="text-4xl">{getTotalUsersCount()}</p>
+                    <p className="text-4xl text-blue-600">
+                      {getTotalUsersCount()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -227,7 +233,7 @@ const AdminDashboard = () => {
             )}
             {activeTab === "users" && (
               <div className="w-full">
-                <h2 className="text-4xl font-bold mb-4 ">All Orders</h2>
+                <h2 className="text-4xl font-bold mb-4 ">All Users</h2>
                 <UserList users={users} />
               </div>
             )}

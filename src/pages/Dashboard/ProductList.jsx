@@ -76,7 +76,7 @@ const ProductList = () => {
 
   return (
     <div className="mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6">Product List</h2>
+      <h2 className="text-2xl font-bold mb-6">Products List</h2>
       <table className="table-auto w-full text-left">
         <thead>
           <tr>
@@ -90,11 +90,11 @@ const ProductList = () => {
         <tbody>
           {products.map((product) => (
             <tr key={product._id}>
-              <td className="border px-4 py-2">{product.title}</td>
-              <td className="border px-4 py-2">{product.category}</td>
-              <td className="border px-4 py-2">{product.price}</td>
-              <td className="border px-4 py-2">{product.description}</td>
-              <td className="border px-4 py-2 space-y-2">
+              <td className="border font-medium px-4 py-2">{product.title}</td>
+              <td className="border font-medium px-4 py-2">{product.category}</td>
+              <td className="border font-medium px-4 py-2">{product.price}</td>
+              <td className="border font-medium px-4 py-2">{product.description}</td>
+              <td className="border font-medium px-4 py-2 space-y-2">
                 <button
                   onClick={() => openModal(product)}
                   className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2 w-full"

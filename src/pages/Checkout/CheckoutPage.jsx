@@ -94,7 +94,7 @@ const CheckoutPage = () => {
       setTimeout(() => {
         setIsLoading(true);
         placeOrder();
-      }, 10000);
+      }, 1000);
     } else if (paymentMethod === "onlinePayment") {
       setIsLoading(true);
       try {

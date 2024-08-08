@@ -10,15 +10,15 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
         user.orders.map((order) => ({
           name: user.name,
           email: user.email,
-          mobile: `0${order.mobile}`,
+          mobile: `${order.mobile}`,
           address: order.address,
           orderId: order._id,
+          transactionID: order.transactionID,
           products: order.products.map(
             (product) =>
               `${product.productId.title} - Quantity: ${product.quantity} `
           ),
           amountTotal: order.amountTotal.$numberDecimal,
-          amountShipping: order.amountShipping.$numberDecimal,
           date: format(new Date(order.createdAt), "dd/MM/yyyy"),
           status: order.status,
         }))
@@ -33,9 +33,9 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
       { Header: "Mobile", accessor: "mobile" },
       { Header: "Address", accessor: "address" },
       { Header: "Order ID", accessor: "orderId" },
+      { Header: "Trans. ID", accessor: "transactionID" },
       { Header: "Products", accessor: "products" },
       { Header: "Total Amount", accessor: "amountTotal" },
-      { Header: "Shipping Amount", accessor: "amountShipping" },
       { Header: "Date", accessor: "date" },
       {
         Header: "Status",
@@ -44,14 +44,24 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
           <div className="flex items-center">
             <span className="mr-2 capitalize">{row.original.status}</span>
             {row.original.status === "pending" && (
-              <button
-                onClick={() =>
-                  handleUpdateOrderStatus(row.original.orderId, "approved")
-                }
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Approve
-              </button>
+              <>
+                <button
+                  onClick={() =>
+                    handleUpdateOrderStatus(row.original.orderId, "approved")
+                  }
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() =>
+                    handleUpdateOrderStatus(row.original.orderId, "cancelled")
+                  }
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Cancel
+                </button>
+              </>
             )}
           </div>
         ),
@@ -96,7 +106,7 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
               return (
                 <tr {...row.getRowProps()} className="hover:bg-gray-50">
                   {row.cells.map((cell) => (
-                    <td {...cell.getCellProps()} className="px-2 py-4 ">
+                    <td {...cell.getCellProps()} className="px-2 py-4   ">
                       {cell.render("Cell")}
                     </td>
                   ))}
