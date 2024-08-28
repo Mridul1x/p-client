@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   const [promoCodeError, setPromoCodeError] = useState("");
   const [promoCodeSuccess, setPromoCodeSuccess] = useState(false);
   const token = useSelector((state) => state.user?.token);
-  const apiBaseUrl = "http://localhost:5050";
+  const apiBaseUrl = "https://p-server-prac.vercel.app";
   const handleShippingCostChange = (event) => {
     setShippingCost(event.target.value === "inside" ? 70 : 130);
   };

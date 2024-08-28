@@ -7,6 +7,7 @@ import useFetch from "../../hooks/useFetch";
 import Nuts from "./Nuts";
 import { AuthContext } from "../../provider/AuthProvider";
 import { Helmet } from "react-helmet";
+import Powder from "./Powder";
 
 const Products = ({ isAddedInHomepage }) => {
   const { user } = useContext(AuthContext);
@@ -48,6 +49,7 @@ const Products = ({ isAddedInHomepage }) => {
         </div>
       </div>
       <Nuts isAddedInHomepage={true}></Nuts>
+      <Powder isAddedInHomepage={true}></Powder>
     </main>
   );
 };

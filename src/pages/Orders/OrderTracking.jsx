@@ -22,7 +22,7 @@ const OrderTracking = ({ status, transactionID }) => {
         >
           {step.completed ? <FaCheckCircle /> : index + 1}
         </div>
-        <div className="ml-4 text-sm">{step.name}</div>
+        <div className="ml-4 text-sm">{step.name}</div>dm
         {index < steps.length - 1 && (
           <div className="flex-1 h-1 bg-gray-200 mx-4"></div>
         )}

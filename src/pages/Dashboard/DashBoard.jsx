@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useTable } from "react-table";
 import { format } from "date-fns";
 import ExportToExcel from "../../component/ExportToExcel";
+import { getStatusColor } from "../../utilities/getStatusColor";
 
 const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
   const data = useMemo(
@@ -40,36 +41,40 @@ const Dashboard = ({ usersWithOrders, handleUpdateOrderStatus }) => {
       {
         Header: "Status",
         accessor: "status",
-        Cell: ({ row }) => (
-          <div className="flex items-center">
-            <span className="mr-2 capitalize">{row.original.status}</span>
-            {row.original.status === "pending" && (
-              <>
-                <button
-                  onClick={() =>
-                    handleUpdateOrderStatus(row.original.orderId, "approved")
-                  }
-                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() =>
-                    handleUpdateOrderStatus(row.original.orderId, "cancelled")
-                  }
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Cancel
-                </button>
-              </>
-            )}
-          </div>
-        ),
+        Cell: ({ row }) => {
+          const statusColor = getStatusColor(row.original.status);
+          return (
+            <div className="flex items-center">
+              <span className={`mr-2 capitalize font-semibold ${statusColor}`}>
+                {row.original.status}
+              </span>
+              {row.original.status === "pending" && (
+                <>
+                  <button
+                    onClick={() =>
+                      handleUpdateOrderStatus(row.original.orderId, "approved")
+                    }
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleUpdateOrderStatus(row.original.orderId, "cancelled")
+                    }
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Cancel
+                  </button>
+                </>
+              )}
+            </div>
+          );
+        },
       },
     ],
     [handleUpdateOrderStatus]
   );
-
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 

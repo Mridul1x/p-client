@@ -18,7 +18,9 @@ const ProductList = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://localhost:5050/api/products");
+      const response = await axios.get(
+        "https://p-server-prac.vercel.app/api/products"
+      );
       console.log(response.data);
       setProducts(response.data);
     } catch (error) {
@@ -91,9 +93,13 @@ const ProductList = () => {
           {products.map((product) => (
             <tr key={product._id}>
               <td className="border font-medium px-4 py-2">{product.title}</td>
-              <td className="border font-medium px-4 py-2">{product.category}</td>
+              <td className="border font-medium px-4 py-2">
+                {product.category}
+              </td>
               <td className="border font-medium px-4 py-2">{product.price}</td>
-              <td className="border font-medium px-4 py-2">{product.description}</td>
+              <td className="border font-medium px-4 py-2">
+                {product.description}
+              </td>
               <td className="border font-medium px-4 py-2 space-y-2">
                 <button
                   onClick={() => openModal(product)}
@@ -157,7 +163,7 @@ const ProductList = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Price</label>
+                <label className="block text-gray-700">Description</label>
                 <textarea
                   name="description"
                   value={selectedProduct.description}

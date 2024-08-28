@@ -21,11 +21,13 @@ import Fail from "../pages/Checkout/Fail";
 import Success from "../pages/Checkout/Success";
 import Cancel from "../pages/Checkout/Cancel";
 import UserRoute from "./UserRoute";
+import ErrorPage from "../pages/Error/Error";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main></Main>,
+    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
