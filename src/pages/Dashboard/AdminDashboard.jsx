@@ -10,6 +10,8 @@ import { MdCreateNewFolder, MdDashboard } from "react-icons/md";
 import { LiaHandsHelpingSolid } from "react-icons/lia";
 import CreateProduct from "./CreateProduct";
 import ProductList from "./ProductList";
+import useCountUp from "../../utilities/useCountUp";
+import BarChart from "../../component/BarChart";
 
 const AdminDashboard = () => {
   const [usersWithOrders, setUsersWithOrders] = useState([]);
@@ -114,6 +116,14 @@ const AdminDashboard = () => {
     return users ? users.filter((user) => user.role === "user").length : 0;
   };
 
+  const pendingOrdersCount = useCountUp(getPendingOrdersCount(), 2000);
+  const approvedOrderAmount = useCountUp(
+    parseFloat(getTotalApprovedOrdersAmount()),
+    2000
+  );
+  const approvedItemsCount = useCountUp(getApprovedItemsCount(), 2000);
+  const totalUsersCount = useCountUp(getTotalUsersCount(), 2000);
+
   if (isLoading || isLoadingOrders) {
     return (
       <div>
@@ -192,7 +202,7 @@ const AdminDashboard = () => {
                       Pending Orders
                     </h3>
                     <p className="text-4xl text-yellow-600">
-                      {getPendingOrdersCount()}
+                      {pendingOrdersCount}
                     </p>
                   </div>
                   <div className="bg-white p-6 rounded-lg shadow-2xl">
@@ -200,7 +210,7 @@ const AdminDashboard = () => {
                       Subtotal Of Approved Items:
                     </h3>
                     <p className="text-4xl text-green-600">
-                      BDT {getTotalApprovedOrdersAmount()}
+                      BDT {approvedOrderAmount}
                     </p>
                   </div>
                   <div className="bg-white p-6 rounded-lg shadow-2xl">
@@ -208,17 +218,18 @@ const AdminDashboard = () => {
                       Approved Items Count
                     </h3>
                     <p className="text-4xl text-green-800">
-                      {getApprovedItemsCount()}
+                      {approvedItemsCount}
                     </p>
                   </div>
                   <div className="bg-white p-6 rounded-lg shadow-2xl">
                     <h3 className="text-2xl font-semibold mb-4">
                       Total Users (Excluding Admin)
                     </h3>
-                    <p className="text-4xl text-blue-600">
-                      {getTotalUsersCount()}
-                    </p>
+                    <p className="text-4xl text-blue-600">{totalUsersCount}</p>
                   </div>
+                </div>
+                <div className="mt-12  border-2  border-gray-200 rounded-2xl">
+                  <BarChart usersWithOrders={usersWithOrders}></BarChart>
                 </div>
               </div>
             )}

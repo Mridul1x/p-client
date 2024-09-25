@@ -26,7 +26,7 @@ const Success = () => {
     const fetchOrderData = async () => {
       try {
         const response = await axios.get(
-          `https://p-server-prac.vercel.app/api/orders/${transactionID}`
+          `http://localhost:5050/api/orders/${transactionID}`
         );
         setOrderData(response.data);
       } catch (err) {

@@ -628,7 +628,7 @@ html {
   rotate: -3deg;
 }
 
-.card {
+.cardd {
   height: 20rem;
   background: rgba(6, 182, 212, 0.1);
   border-radius: 0.5rem;
@@ -637,7 +637,7 @@ html {
   position: relative;
   z-index: 0;
 }
-.card::before {
+.cardd::before {
   width: 100%;
   height: 100%;
   content: "";
@@ -646,7 +646,7 @@ html {
   left: 0;
   z-index: -1;
 }
-.card::after {
+.cardd::after {
   width: 100%;
   height: 100%;
   background-color: aqua;
@@ -660,16 +660,16 @@ html {
   transition: 0.2s;
 }
 
-.card:nth-child(2)::after {
+.cardd:nth-child(2)::after {
   background: #9be2ee;
   background-image: linear-gradient(160deg, #9c0b07 0%, #f23b35 100%);
 }
-.card:nth-child(4)::after {
+.cardd:nth-child(4)::after {
   background: #9be2ee;
   background-image: linear-gradient(160deg, #9c0b07 0%, #f23b35 100%);
 }
 
-.card:hover::after {
+.cardd:hover::after {
   clip-path: circle(100%);
   transition: all 2s;
 }

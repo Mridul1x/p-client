@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductCard = ({ product }) => {
+const Productcard = ({ product }) => {
   return (
     <div className="flex flex-col  pb-3 ">
       <img
@@ -17,4 +17,4 @@ const ProductCard = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default Productcard;

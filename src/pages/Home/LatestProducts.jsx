@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { Link } from "react-router-dom";
-import ProductCard from "../../component/ProductCard";
+import Productcard from "../../component/ProductCard";
 import useFetch from "../../hooks/useFetch";
 import Loading from "../../component/Loading";
 import Error from "../../component/Error";
@@ -26,7 +26,7 @@ const LatestProducts = () => {
         <div className="flex flex-col items-center">
           <div className="product-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             {products.slice(0, 3).map((product) => (
-              <ProductCard key={product._id} product={product} />
+              <Productcard key={product._id} product={product} />
             ))}
           </div>
           <Link

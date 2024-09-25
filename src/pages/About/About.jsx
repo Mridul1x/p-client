@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
+import Aos from "aos";
 
 const img4 =
   "https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/v5j84y3uumd2qzqfbj4m";
@@ -15,6 +16,9 @@ const img2 =
   "https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/v5j84y3uumd2qzqfbj4m";
 
 const About = () => {
+  useEffect(() => {
+    Aos.init();
+  });
   return (
     <main>
       <Helmet>
@@ -161,17 +165,17 @@ const About = () => {
           data-aos-duration="1000"
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 md:gap-10 gap-5 pb-16 text-3xl font-medium "
         >
-          <div className="card flex items-center p-5">
+          <div className="cardd flex items-center p-5">
             <h1 className="">Always be nice and respectful</h1>
           </div>
-          <div className="card flex items-center p-5">Quality Excellence</div>
-          <div className="card flex items-center p-5">
+          <div className="cardd flex items-center p-5">Quality Excellence</div>
+          <div className="cardd flex items-center p-5">
             Delivering Excellence Locally
           </div>
-          <div className="card flex items-center p-5">
+          <div className="cardd flex items-center p-5">
             Integrity and Transparency
           </div>
-          <div className="card flex items-center p-5">
+          <div className="cardd flex items-center p-5">
             Sustainability and Responsibility
           </div>
         </div>
