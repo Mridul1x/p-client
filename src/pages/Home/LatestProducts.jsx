@@ -8,6 +8,7 @@ import Error from "../../component/Error";
 import { AuthContext } from "../../provider/AuthProvider";
 const LatestProducts = () => {
   const { user } = useContext(AuthContext);
+  
   const {
     data: products,
     error,

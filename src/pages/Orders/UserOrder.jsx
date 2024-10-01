@@ -168,8 +168,8 @@ const UserOrders = () => {
       )} */}
 
       {orders.length > 0 ? (
-        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
-          <div className="overflow-x-auto overflow-y-auto max-h-96 md:overflow-x-visible">
+        <div className="bg-white shadow-md rounded px-2 pt-6 pb-8">
+          <div className="overflow-y-auto">
             <table className="w-full mt-4 text-left table-auto">
               <thead>
                 <tr className="uppercase border-b">

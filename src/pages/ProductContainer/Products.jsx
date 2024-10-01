@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Categories from "../../component/Categories";
 import Error from "../../component/Error";
 import Loading from "../../component/Loading";
@@ -12,11 +12,18 @@ import Powder from "./Powder";
 const Products = ({ isAddedInHomepage }) => {
   const { user } = useContext(AuthContext);
   const marginClass = `${isAddedInHomepage ? "mt-40" : "mt-20"}`;
+  // State for search input
+  const [searchQuery, setSearchQuery] = useState("");
   const {
     data: products,
     error,
     isLoading,
   } = useFetch("/api/products", user?.token);
+
+  // Filter products based on the search query
+  const filteredProducts = products?.filter((product) =>
+    product.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <main>
@@ -33,17 +40,35 @@ const Products = ({ isAddedInHomepage }) => {
         <link rel="canonical" href="https://www.mazzakagro.com/products" />
       </Helmet>
       <Categories></Categories>
+
+      {/* Search Bar */}
+
+      {/* browse all products */}
       <div className={`${marginClass} overflow-x-hidden`}>
         <div className="wrapper mb-20  flex flex-col gap-10">
-          <h2 className="section-title">Browse all products</h2>
+          <div className="wrapp mb-8 mt-8 flex justify-between">
+            <h2 className="section-title">Browse all products</h2>
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="border-2 border-gray-300 rounded-md p-2 "
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
           {isLoading && <Loading isLoading={isLoading} />}
 
           {error && <Error error={error.message} />}
-          {products && (
+          {filteredProducts && (
             <div className="products grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-              {products.map((product) => (
-                <ProductItem key={product._id} product={product} />
-              ))}
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <ProductItem key={product._id} product={product} />
+                ))
+              ) : (
+                <p className="text-red-600">No products found</p>
+              )}
             </div>
           )}
         </div>

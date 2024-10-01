@@ -42,6 +42,13 @@ html {
   @apply container mx-auto px-5 lg:px-0;
 }
 
+/* Tailwind classes added in JSX for styling */
+.wrapp input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  transition: border-color 0.3s ease;
+}
+
 .linear-walkaways {
   @apply relative before:absolute before:top-1/2 before:left-0 before:w-0 before:h-[1px] before:bg-rose-500 hover:before:w-full before:duration-300;
 }
@@ -136,24 +143,31 @@ html {
 .category-title-seeds,
 .category-title-berries,
 .category-title-dates {
-  @apply text-6xl text-gray-100 font-medium uppercase z-20 hidden duration-500 ease-in-out;
+  @apply text-6xl text-gray-100 font-medium uppercase z-20 duration-500 ease-in-out;
 }
 
 .overlay {
   @apply absolute top-0 bottom-0 left-0 right-0 h-full w-full opacity-0 duration-500 bg-gray-800 z-20 ease-in-out;
 }
 
+.sq-nuts .overlay,
+.sq-seeds .overlay,
+.sq-berries .overlay,
+.sq-dates .overlay {
+  opacity: 0.3;
+}
+
 .sq-nuts:hover .overlay,
 .sq-seeds:hover .overlay,
 .sq-berries:hover .overlay,
 .sq-dates:hover .overlay {
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
-.sq-nuts:hover .category-title-nuts,
-.sq-seeds:hover .category-title-seeds,
-.sq-berries:hover .category-title-berries,
-.sq-dates:hover .category-title-dates {
+.sq-nuts .category-title-nuts,
+.sq-seeds .category-title-seeds,
+.sq-berries .category-title-berries,
+.sq-dates .category-title-dates {
   @apply block;
 }
 
