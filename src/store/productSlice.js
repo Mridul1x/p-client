@@ -15,9 +15,19 @@ export const productSlice = createSlice({
       );
 
       if (item) {
-        item.quantity += action.payload.quantity;
+        // Check if adding more would exceed stock
+        const newQuantity = item.quantity + action.payload.quantity;
+        if (newQuantity > action.payload.stock) {
+          toast.error("Cannot add more than available stock");
+        } else {
+          item.quantity = newQuantity;
+        }
       } else {
-        state.products.push(action.payload);
+        if (action.payload.quantity > action.payload.stock) {
+          toast.error("Cannot add more than available stock");
+        } else {
+          state.products.push(action.payload);
+        }
       }
     },
 

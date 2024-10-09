@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import ProductItem from "../../component/ProductItem";
 import Loading from "../../component/Loading";
 import Error from "../../component/Error";
 import useFetch from "../../hooks/useFetch";
 import { AuthContext } from "../../provider/AuthProvider";
+import ProductItem from "../../component/ProductItem";
 
 const Nuts = ({ isAddedInHomepage }) => {
   const { user } = useContext(AuthContext);

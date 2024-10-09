@@ -3,39 +3,59 @@ import { formatCurrency } from "../utilities/formateCurrency";
 
 const ProductItem = ({ product }) => {
   return (
-    <div className="flex flex-col gap-3 w-full md:w-[20rem] border-b pb-3">
-      <img
-        src={product.imageUrl}
-        width={500}
-        height={500}
-        alt={product.title}
-        className="w-auto h-[30rem] object-cover"
-      />
-      <span className="uppercase text-xs tracking-widest font-semibold">
+    <div className="flex flex-col gap-4 w-full md:w-[22rem] p-4 border rounded-lg shadow-lg bg-white hover:shadow-xl transition-shadow duration-300">
+      <div className="relative">
+        <img
+          src={product.imageUrl}
+          width={500}
+          height={500}
+          alt={product.title}
+          className="w-full h-[22rem] object-cover rounded-lg hover:scale-105 transition-transform duration-300"
+        />
+        {product.stock === 0 && (
+          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+            Out of Stock
+          </span>
+        )}
+      </div>
+      <span className="text-gray-700 uppercase text-xs tracking-widest font-semibold">
         {product.category}
       </span>
-      <h3 className="product-title text-2xl font-medium h-[2.8rem]">
+      <h3 className="product-title text-xl font-semibold h-[2.8rem] leading-tight">
         {product.title}
         {product.category === "Nuts" && (
           <span className="uppercase text-lg font-medium tracking-widest">
-             {" "}(150gm)
+            {" "}
+            (150gm)
           </span>
         )}
       </h3>
-      <p className="text-gray-500 h-[5rem]">
+      <p className="text-gray-600 text-sm h-[4rem] overflow-hidden line-clamp-2">
         {product.description?.split(".")[0]}.
       </p>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center ">
         <p className="text-rose-500 font-medium">
           {formatCurrency(product.price)}
         </p>
-        <Link
-          to={`/products/${product._id}`}
-          className="uppercase linear-walkaways"
+        <p
+          className={`text-sm font-medium ${
+            product.stock > 0 ? "text-green-600" : "text-red-500"
+          }`}
         >
-          Buy now
-        </Link>
+          {product.stock > 0 ? `In Stock: ${product.stock}` : "Out of Stock"}
+        </p>
       </div>
+
+      <Link
+        to={`/products/${product._id}`}
+        className={`uppercase btn btn-outline linear-walkaways font-semibold rounded-lg ${
+          product.stock === 0 ? "bg-gray-300 cursor-not-allowed" : ""
+        }`}
+        disabled={product.stock === 0}
+      >
+        {product.stock > 0 ? "Buy Now" : "Unavailable"}
+      </Link>
+    
     </div>
   );
 };

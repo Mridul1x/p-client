@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Categories from "../../component/Categories";
 import Error from "../../component/Error";
 import Loading from "../../component/Loading";
@@ -10,6 +10,13 @@ import { Helmet } from "react-helmet";
 import Powder from "./Powder";
 
 const Products = ({ isAddedInHomepage }) => {
+  useEffect(() => {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, []);
   const { user } = useContext(AuthContext);
   const marginClass = `${isAddedInHomepage ? "mt-40" : "mt-20"}`;
   // State for search input

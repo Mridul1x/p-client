@@ -4,37 +4,53 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { formatCurrency } from "../../utilities/formateCurrency";
 import { Link, useParams } from "react-router-dom";
-import Loading from "../../component/Loading";
 import Error from "../../component/Error";
 import useFetch from "../../hooks/useFetch";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../store/productSlice";
 import { AuthContext } from "../../provider/AuthProvider";
 import Overlay from "../../component/Overlay";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   useEffect(() => {
     AOS.init();
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   }, []);
   const { user } = useContext(AuthContext);
-
+  const { productId } = useParams();
   const [quantity, setQuantity] = useState(1);
 
-  const handleDecrease = useCallback(() => {
-    setQuantity(quantity === 1 ? 1 : (prev) => prev - 1);
-  }, [quantity]);
-
-  const handleIncrease = useCallback(() => {
-    setQuantity((prev) => prev + 1);
-  }, []);
-
-  const { productId } = useParams();
   const dispatch = useDispatch();
   const {
     data: product,
     error,
     isLoading,
   } = useFetch(`/api/products/${productId}`, user?.token);
+
+  const handleIncrease = useCallback(() => {
+    if (quantity < product?.stock) {
+      setQuantity((prev) => prev + 1);
+    } else {
+      toast.error("Stock limit reached!"); // Show toast when exceeding stock
+    }
+  }, [quantity, product?.stock]);
+
+  const handleDecrease = useCallback(() => {
+    setQuantity(quantity === 1 ? 1 : (prev) => prev - 1);
+  }, [quantity]);
+
+  const isProductInCart = useSelector((state) =>
+    state.myShop.products.find((item) => item._id === productId)
+  );
+
+  const isOutOfStock = isProductInCart
+    ? isProductInCart.quantity >= product?.stock
+    : false;
 
   if (isLoading) {
     return <Overlay></Overlay>;
@@ -103,17 +119,28 @@ const ProductDetails = () => {
             </div>
           </div>
           <Link
-            onClick={() => dispatch(addToCart({ ...product, quantity }))}
+            onClick={() => {
+              if (!isOutOfStock) {
+                dispatch(addToCart({ ...product, quantity }));
+              } else {
+                toast.error("Product already in cart with max stock");
+              }
+            }}
             to="/cart"
-            className="bg-cyan-500 text-center py-3 text-white text-xl font-medium hover:bg-cyan-600 duration-300 mt-5"
+            className={`bg-cyan-500 text-center py-3 text-white text-xl font-medium hover:bg-cyan-600 duration-300 mt-5 ${
+              isOutOfStock ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             data-aos="zoom-in"
             data-aos-duration="1000"
             data-aos-delay="800"
+            disabled={isOutOfStock}
           >
-            Add to Cart
+            {isOutOfStock ? "Out of Stock" : "Add to Cart"}
           </Link>
           <div className="mt-5" data-aos="fade-up" data-aos-duration="1000">
-            <p className="font-medium mb-3">Description:</p>
+            <p className="font-medium mb-2">Stock:</p>
+            <p className="text-gray-500 mb-4"> {product?.stock}</p>
+            <p className="font-medium mb-2">Description:</p>
             <p className="text-gray-500">{product.description}</p>
           </div>
         </div>

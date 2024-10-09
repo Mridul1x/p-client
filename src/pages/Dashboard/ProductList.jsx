@@ -83,6 +83,7 @@ const ProductList = () => {
             <th className="px-4 py-2">Title</th>
             <th className="px-4 py-2">Category</th>
             <th className="px-4 py-2">Price</th>
+            <th className="px-4 py-2">Stock</th>
             <th className="px-4 py-2">Description</th>
             <th className="px-4 py-2">Actions</th>
           </tr>
@@ -95,6 +96,7 @@ const ProductList = () => {
                 {product.category}
               </td>
               <td className="border font-medium px-4 py-2">{product.price}</td>
+              <td className="border font-medium px-4 py-2">{product?.stock}</td>
               <td className="border font-medium px-4 py-2">
                 {product.description}
               </td>
@@ -154,6 +156,22 @@ const ProductList = () => {
                     setSelectedProduct({
                       ...selectedProduct,
                       price: e.target.value,
+                    })
+                  }
+                  className="w-full px-3 py-2 border rounded-lg"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Stock</label>
+                <input
+                  type="number"
+                  name="stock"
+                  value={selectedProduct?.stock}
+                  onChange={(e) =>
+                    setSelectedProduct({
+                      ...selectedProduct,
+                      stock: e.target.value,
                     })
                   }
                   className="w-full px-3 py-2 border rounded-lg"
