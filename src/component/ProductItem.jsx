@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../utilities/formateCurrency";
+import { useSelector } from "react-redux";
 
 const ProductItem = ({ product }) => {
+  const userStore = useSelector((state) => state.user?.user);
   return (
     <div className="flex flex-col gap-4 w-full md:w-[22rem] p-4 border rounded-lg shadow-lg bg-white hover:shadow-xl transition-shadow duration-300">
       <div className="relative">
@@ -45,17 +47,17 @@ const ProductItem = ({ product }) => {
           {product.stock > 0 ? `In Stock: ${product.stock}` : "Out of Stock"}
         </p>
       </div>
-
-      <Link
-        to={`/products/${product._id}`}
-        className={`uppercase btn btn-outline linear-walkaways font-semibold rounded-lg ${
-          product.stock === 0 ? "bg-gray-300 cursor-not-allowed" : ""
-        }`}
-        disabled={product.stock === 0}
-      >
-        {product.stock > 0 ? "Buy Now" : "Unavailable"}
-      </Link>
-    
+      {userStore.role === "user" && (
+        <Link
+          to={`/products/${product._id}`}
+          className={`uppercase btn btn-outline linear-walkaways font-semibold rounded-lg ${
+            product.stock === 0 ? "bg-gray-300 cursor-not-allowed" : ""
+          }`}
+          disabled={product.stock === 0}
+        >
+          {product.stock > 0 ? "Buy Now" : "Unavailable"}
+        </Link>
+      )}
     </div>
   );
 };

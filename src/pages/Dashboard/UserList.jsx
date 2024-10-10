@@ -1,32 +1,68 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useTable } from "react-table";
 import ExportToExcelUserList from "../../component/ExportToExcelUserList";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const UserList = ({ users }) => {
+  const apiBaseUrl = import.meta.env.VITE_PUBLIC_BASE_URL;
+  const token = useSelector((state) => state.user?.token);
+  const [userList, setUserList] = useState(users); // Use state for the user list
+
+  const handleToggleRole = async (userId, currentRole) => {
+    try {
+      const response = await axios.put(
+        `${apiBaseUrl}/api/users/${userId}/role`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // Update the role in the local state
+      setUserList((prevUsers) =>
+        prevUsers.map((user) =>
+          user._id === userId ? { ...user, role: response.data.role } : user
+        )
+      );
+
+      // Show success toast
+      toast.success(`User role updated to ${response.data.role}`);
+    } catch (error) {
+      console.error("Error updating user role:", error);
+      toast.error("Failed to update user role");
+    }
+  };
+
   const adminData = useMemo(
     () =>
-      users
+      userList
         .filter((user) => user.role === "admin")
         .map((user) => ({
+          id: user._id,
           name: user.name,
           email: user.email,
           role: user.role,
           createdAt: new Date(user.createdAt).toLocaleDateString(),
         })),
-    [users]
+    [userList]
   );
 
   const userData = useMemo(
     () =>
-      users
+      userList
         .filter((user) => user.role !== "admin")
         .map((user) => ({
+          id: user._id,
           name: user.name,
           email: user.email,
           role: user.role,
           createdAt: new Date(user.createdAt).toLocaleDateString(),
         })),
-    [users]
+    [userList]
   );
 
   const columns = useMemo(
@@ -35,8 +71,20 @@ const UserList = ({ users }) => {
       { Header: "Email", accessor: "email" },
       { Header: "Role", accessor: "role" },
       { Header: "Created At", accessor: "createdAt" },
+      {
+        Header: "Action",
+        accessor: "id",
+        Cell: ({ row }) => (
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={() => handleToggleRole(row.original.id, row.original.role)}
+          >
+            {row.original.role === "admin" ? "Make User" : "Make Admin"}
+          </button>
+        ),
+      },
     ],
-    []
+    [userList] // Pass userList as dependency
   );
 
   const adminTable = useTable({ columns, data: adminData });
