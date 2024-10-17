@@ -9,7 +9,7 @@ const Ingredients = () => {
   return (
     <div className="relative w-full h-full  overflow-hidden mb-20 ">
       <Parallax
-        bgImage="https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/u2gtcw4asmfmunwdu5bg"
+        bgImage="https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/agromart/u2gtcw4asmfmunwdu5bg"
         bgImageAlt="the cat"
         className="w-full min-h-screen object-cover bg-no-repeat"
         strength={500}

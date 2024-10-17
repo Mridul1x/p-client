@@ -29,7 +29,7 @@ const Banner = () => {
                   data-aos-duration="1200"
                   className="text-xl md:text-2xl lg:text-2xl font-semibold uppercase space-font z-10"
                 >
-                  Mazzak Agro
+                  AgroMart
                 </h1>
                 <Link
                   data-aos="fade-left"

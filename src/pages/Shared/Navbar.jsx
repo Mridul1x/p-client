@@ -57,7 +57,7 @@ const Navbar = () => {
     <header className="w-full h-20 flex items-center justify-between text-white bg-black px-5 relative">
       <div className="logo">
         <Link to="/" className="text-2xl font-semibold logo">
-          Mazzak Agro.
+          AgroMart.
         </Link>
       </div>
       <nav
@@ -114,6 +114,13 @@ const Navbar = () => {
             </li>
           )}
           {userStore && userStore.role === "admin" && (
+            <li>
+              <Link to="/dashboard" className="linear-walkaways">
+                Dashboard
+              </Link>
+            </li>
+          )}
+          {userStore && userStore.role === "superAdmin" && (
             <li>
               <Link to="/dashboard" className="linear-walkaways">
                 Dashboard

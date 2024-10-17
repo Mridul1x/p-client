@@ -18,7 +18,7 @@ const Footer = () => {
             to="/"
             className="text-4xl md:text-2xl font-semibold text-[#8fc443] hover:text-white duration-300"
           >
-            Mazzak Agro.
+            AgroMart.
           </Link>
         </div>
         <div className="footer-col-2 flex flex-col items-start">
@@ -26,7 +26,7 @@ const Footer = () => {
           <div className="social-icons">
             <div className="icon-circle">
               <a
-                href="https://www.facebook.com/mazzakagrobusiness/"
+                href="https://www.facebook.com/agromartbusiness/"
                 target="_blank"
                 className="text-rose-100 mx-auto"
               >
@@ -59,7 +59,7 @@ const Footer = () => {
               <Link to="/products/nuts" className="footer-nav-links">
                 Nuts
               </Link>
-              <Link to="/products/berries" className="footer-nav-links">
+              <Link to="/products/powder" className="footer-nav-links">
                 Berries
               </Link>
             </div>
@@ -80,13 +80,13 @@ const Footer = () => {
           <button className="footer-btn bg-[#8fc443] py-4 px-6 rounded-full uppercase text-sm font-medium hover:text-[#8fc443] hover:bg-rose-50 duration-300 text-white">
             + New Message
           </button>
-          <p className="font-medium text-lg">info@mazzakagro.com</p>
+          <p className="font-medium text-lg">info@agromart.com</p>
         </div>
       </div>
       <div className="flex items-center justify-center flex-col border-t border-gray-500/40 pt-10 text-gray-400  text-center ">
-        <img width={210} src={logo} alt="Mazzak Agro Logo" />
+        <img width={210} src={logo} alt="AgroMart Logo" />
         <p className="copyright uppercase mt-5">
-          &copy; {new Date().getFullYear()} Mazzak Agro. All rights reserved.
+          &copy; {new Date().getFullYear()} AgroMart. All rights reserved.
         </p>
       </div>
     </footer>

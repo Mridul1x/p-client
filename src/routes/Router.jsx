@@ -50,8 +50,8 @@ const router = createBrowserRouter([
         element: <Profile></Profile>,
       },
       {
-        path: "/products/",
-        element: <Products></Products>,
+        path: "/products",
+        element: <Products />,
       },
       {
         path: "/products/nuts",
@@ -70,8 +70,8 @@ const router = createBrowserRouter([
         element: <Dates></Dates>,
       },
       {
-        path: "/products/:productId",
-        element: <ProductDetails></ProductDetails>,
+        path: "/products/:category/:productId",
+        element: <ProductDetails />,
       },
       {
         path: "/cart",

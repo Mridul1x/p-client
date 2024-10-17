@@ -12,6 +12,8 @@ import CreateProduct from "./CreateProduct";
 import ProductList from "./ProductList";
 import useCountUp from "../../utilities/useCountUp";
 import BarChart from "../../component/BarChart";
+import toast from "react-hot-toast";
+import CouponSection from "./CuponSection";
 
 const AdminDashboard = () => {
   const [usersWithOrders, setUsersWithOrders] = useState([]);
@@ -63,6 +65,9 @@ const AdminDashboard = () => {
           },
         }
       );
+
+      toast.success("Action Submitted");
+
       setUsersWithOrders((prevUsersWithOrders) =>
         prevUsersWithOrders.map((user) => ({
           ...user,
@@ -187,6 +192,14 @@ const AdminDashboard = () => {
               >
                 {<MdCreateNewFolder />}
               </DashboardTab>
+              <DashboardTab
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                tabName="coupon"
+                placeholder="Coupon"
+              >
+                {<MdCreateNewFolder />}
+              </DashboardTab>
             </div>
           </aside>
           <div className="py-10 px-5 bg-white ">
@@ -255,6 +268,7 @@ const AdminDashboard = () => {
               </div>
             )}
             {activeTab === "all-products" && <ProductList></ProductList>}
+            {activeTab === "coupon" && <CouponSection></CouponSection>}
           </div>
         </div>
       </section>

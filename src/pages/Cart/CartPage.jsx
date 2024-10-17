@@ -11,6 +11,7 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(products);
 
   /* SUBTOTAL CALCULATION */
   const total = () => {

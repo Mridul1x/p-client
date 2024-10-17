@@ -5,26 +5,28 @@ import Delivered from "./Delivered";
 import LatestProducts from "./LatestProducts";
 import Info from "./Info";
 import { Helmet } from "react-helmet";
+import FAQ from "./Faq";
 
 const Home = () => {
   return (
     <main>
       <Helmet>
-        <title>Mazzak Agro</title>
+        <title>AgroMart</title>
         <meta
           name="description"
           content="আমাদের অঙ্গীকার নিরাপদ খাদ্য হোক সবার অধিকার।"
         />
         <meta
           name="keywords"
-          content="Mazzak Agro, nut products, premium nuts, roasted nuts, berries, dates, powder"
+          content="AgroMart, nut products, premium nuts, roasted nuts, berries, dates, powder"
         />
-        <link rel="canonical" href="https://www.mazzakagro.com/" />
+        <link rel="canonical" href="https://www.agromart.com/" />
       </Helmet>
       <Banner></Banner>
       <Ingredients></Ingredients>
       <Delivered></Delivered>
       <LatestProducts></LatestProducts>
+      <FAQ></FAQ>
     </main>
   );
 };

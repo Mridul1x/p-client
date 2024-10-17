@@ -208,9 +208,9 @@ const ProductList = () => {
                   required
                 >
                   <option value="Nuts">Nuts</option>
-                  <option value="Seed">Seed</option>
+                  <option value="Seeds">Seeds</option>
                   <option value="Powder">Powder</option>
-                  <option value="Date">Date</option>
+                  <option value="Dates">Dates</option>
                 </select>
               </div>
               <div className="flex justify-end">

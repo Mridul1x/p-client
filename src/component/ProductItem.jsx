@@ -47,15 +47,12 @@ const ProductItem = ({ product }) => {
           {product.stock > 0 ? `In Stock: ${product.stock}` : "Out of Stock"}
         </p>
       </div>
-      {userStore.role === "user" && (
+      {userStore?.role !== "admin" && (
         <Link
-          to={`/products/${product._id}`}
-          className={`uppercase btn btn-outline linear-walkaways font-semibold rounded-lg ${
-            product.stock === 0 ? "bg-gray-300 cursor-not-allowed" : ""
-          }`}
-          disabled={product.stock === 0}
+          to={`/products/${product.category.toLowerCase()}/${product._id}`}
+          className="uppercase btn btn-outline linear-walkaways font-semibold rounded-lg"
         >
-          {product.stock > 0 ? "Buy Now" : "Unavailable"}
+          Buy Now
         </Link>
       )}
     </div>

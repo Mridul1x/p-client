@@ -16,7 +16,7 @@ const Seeds = ({ isAddedInHomepage }) => {
   } = useFetch("/api/products", user?.token);
 
   const filteredProducts = products?.filter(
-    (product) => product.category === "Seed"
+    (product) => product.category === "Seeds"
   );
   const updatedProducts = filteredProducts?.map((product) => ({
     ...product,

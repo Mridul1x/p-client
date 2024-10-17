@@ -5,12 +5,14 @@ import { useSelector } from "react-redux";
 
 const CreateProduct = () => {
   const token = useSelector((state) => state.user?.token);
+  const [photo, setPhoto] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState({
     title: "",
     price: "",
-    imageUrl: "",
     category: "",
     description: "",
+    stock: "",
   });
 
   const handleChange = (e) => {
@@ -23,20 +25,61 @@ const CreateProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Check if all fields are filled
+    if (
+      !product.title ||
+      !product.price ||
+      !photo || // Check if an image is selected
+      !product.category ||
+      !product.description ||
+      !product.stock
+    ) {
+      toast.error("Please fill in all fields!");
+      return;
+    }
+
+    setIsLoading(true); // Set loading state
+
     try {
-      const data = await axiosPost("/api/products", product, token);
+      // Image upload
+      let uploadedImageUrl = null;
+      if (photo) {
+        const formData = new FormData();
+        formData.append("image", photo);
+        const response = await axiosPost(
+          "/api/products/upload",
+          formData,
+          token,
+          true
+        );
+        uploadedImageUrl = response.imageUrl;
+      }
+
+      // Product creation
+      await axiosPost(
+        "/api/products",
+        {
+          ...product,
+          imageUrl: uploadedImageUrl,
+        },
+        token
+      );
 
       toast.success("Product created successfully!");
       // Reset form
       setProduct({
         title: "",
         price: "",
-        imageUrl: "",
         category: "",
         description: "",
+        stock: "",
       });
+      setPhoto(null);
     } catch (error) {
       console.error("Error creating product:", error);
+      toast.error("Failed to create product.");
+    } finally {
+      setIsLoading(false); // Reset loading state in any case
     }
   };
 
@@ -67,12 +110,13 @@ const CreateProduct = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block font-semibold text-gray-700">Image URL</label>
+          <label className="block font-semibold text-gray-700">
+            Product Image
+          </label>
           <input
-            type="text"
-            name="imageUrl"
-            value={product.imageUrl}
-            onChange={handleChange}
+            type="file"
+            id="photo"
+            onChange={(e) => setPhoto(e.target.files[0])}
             className="w-full px-3 py-2 border rounded-lg"
             required
           />
@@ -90,13 +134,15 @@ const CreateProduct = () => {
               Select a category
             </option>
             <option value="Nuts">Nuts</option>
-            <option value="Seed">Seed</option>
-            <option value="Powder">Powder</option>
-            <option value="Date">Date</option>
+            <option value="Seeds">Seeds</option>
+            <option value="Powders">Powder</option>
+            <option value="Dates">Dates</option>
           </select>
         </div>
         <div className="mb-4">
-          <label className="block font-semibold text-gray-700">Description</label>
+          <label className="block font-semibold text-gray-700">
+            Description
+          </label>
           <textarea
             name="description"
             value={product.description}
@@ -105,11 +151,27 @@ const CreateProduct = () => {
             required
           ></textarea>
         </div>
+        <div className="mb-4">
+          <label className="block font-semibold text-gray-700">Stock</label>
+          <input
+            type="number"
+            name="stock"
+            value={product.stock}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded-lg"
+            required
+          />
+        </div>
         <button
           type="submit"
-          className="w-full bg-[#8fc442] hover:bg-[#90c442d3] text-white font-bold py-2 px-4 rounded-lg"
+          className="bg-[#8fc442] hover:bg-[#90c442d3] text-white h-12 w-full hover:opacity-80 duration-300 flex items-center justify-center gap-2 font-medium uppercase"
+          disabled={isLoading} // Disable button while loading
         >
-          Create Product
+          {isLoading ? ( // Show loading indicator
+            <span className="loading loading-ring loading-lg"></span>
+          ) : (
+            "Create Product"
+          )}
         </button>
       </form>
     </div>

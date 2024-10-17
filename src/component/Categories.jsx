@@ -37,12 +37,12 @@ const Category = () => {
         </Link>
         <Link
           to="/products/powder"
-          className="sq-berries"
+          className="sq-powder"
           data-aos="zoom-in"
           data-aos-duration="1500"
         >
           <div className="overlay"></div>
-          <h3 className="category-title-berries">
+          <h3 className="category-title-powder">
             <p>Powder</p>
           </h3>
         </Link>

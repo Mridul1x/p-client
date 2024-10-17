@@ -49,16 +49,16 @@ const Contact = () => {
   return (
     <main>
       <Helmet>
-        <title>Contact Us - Mazzak Agro</title>
+        <title>Contact Us - AgroMart</title>
         <meta
           name="description"
-          content="Address: 52, New Eskaton Road, TMC Bhaban, 6th Floor, Dhaka, Bangladesh. Email: info@mazzakagro.com"
+          content="Address: 52, New Eskaton Road, TMC Bhaban, 6th Floor, Dhaka, Bangladesh. Email: info@agromart.com"
         />
         <meta
           name="keywords"
-          content="Mazzak Agro, premium nuts, healthy snacks, contact us, New Eskaton Road, Dhaka, Bangladesh, contact, inquiries, feedback, assistance, nut products"
+          content="AgroMart, premium nuts, healthy snacks, contact us, New Eskaton Road, Dhaka, Bangladesh, contact, inquiries, feedback, assistance, nut products"
         />
-        <link rel="canonical" href="https://www.mazzakagro.com/contact" />
+        <link rel="canonical" href="https://www.agromart.com/contact" />
       </Helmet>
       <div className="wrapper min-h-screen mt-28 lg:mt-40 mb-20">
         <h2 className="section-title">Contact Us</h2>
@@ -132,12 +132,12 @@ const Contact = () => {
             <div>
               <p className="font-bold uppercase text-lg">Email Adress:</p>
               <a
-                href="mailto:info@mazzakagro.com"
+                href="mailto:info@agromart.com"
                 aria-label="Our Email Address"
                 title="Our Email Address"
                 className="text-rose-500 underline underline-offset-2"
               >
-                info@mazzakagro.com
+                info@agromart.com
               </a>
             </div>
             <div>

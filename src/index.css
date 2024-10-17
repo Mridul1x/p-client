@@ -116,7 +116,7 @@ html {
 /* CATEGORIES */
 .sq-nuts,
 .sq-seeds,
-.sq-berries,
+.sq-powder,
 .sq-dates {
   background-repeat: no-repeat;
   background-size: cover;
@@ -124,14 +124,14 @@ html {
 }
 
 .sq-nuts {
-  background-image: url(https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/we64sz5wvz97zmnb0ngn);
+  background-image: url(https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/agromart/we64sz5wvz97zmnb0ngn);
 }
 
 .sq-seeds {
   background-image: url(https://images.pexels.com/photos/41959/food-grains-bread-wheat-cereals-41959.jpeg?auto=compress&cs=tinysrgb&w=600);
 }
 
-.sq-berries {
+.sq-powder {
   background-image: url(https://images.pexels.com/photos/6287581/pexels-photo-6287581.jpeg?auto=compress&cs=tinysrgb&w=600);
 }
 
@@ -141,7 +141,7 @@ html {
 
 .category-title-nuts,
 .category-title-seeds,
-.category-title-berries,
+.category-title-powder,
 .category-title-dates {
   @apply text-6xl text-gray-100 font-medium uppercase z-20 duration-500 ease-in-out;
 }
@@ -152,21 +152,21 @@ html {
 
 .sq-nuts .overlay,
 .sq-seeds .overlay,
-.sq-berries .overlay,
+.sq-powder .overlay,
 .sq-dates .overlay {
   opacity: 0.3;
 }
 
 .sq-nuts:hover .overlay,
 .sq-seeds:hover .overlay,
-.sq-berries:hover .overlay,
+.sq-powder:hover .overlay,
 .sq-dates:hover .overlay {
   opacity: 0.8;
 }
 
 .sq-nuts .category-title-nuts,
 .sq-seeds .category-title-seeds,
-.sq-berries .category-title-berries,
+.sq-powder .category-title-powder,
 .sq-dates .category-title-dates {
   @apply block;
 }
@@ -561,7 +561,7 @@ html {
 
 .parallax1 {
   /* The image used */
-  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/bn4hs4t6n0nu0eyjx50a");
+  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/agromart/bn4hs4t6n0nu0eyjx50a");
 
   /* Set a specific height */
   /* Full height */
@@ -580,7 +580,7 @@ html {
 }
 .parallax2 {
   /* The image used */
-  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/kizvyhzjwkcdjyyfxvxj");
+  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/agromart/kizvyhzjwkcdjyyfxvxj");
 
   /* Set a specific height */
   /* Full height */
@@ -603,7 +603,7 @@ html {
 }
 .parallax3 {
   /* The image used */
-  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/mazzakAgro/u2gtcw4asmfmunwdu5bg");
+  background-image: url("https://res.cloudinary.com/dfilp24nj/image/upload/f_auto,q_auto/v1/agromart/u2gtcw4asmfmunwdu5bg");
 
   /* Set a specific height */
   /* Full height */

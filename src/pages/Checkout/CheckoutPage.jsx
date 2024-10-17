@@ -63,19 +63,24 @@ const CheckoutPage = () => {
       setAddressError("");
     }
   };
+  const applyPromoCode = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5050/api/cupon/apply",
+        {
+          name: promoCode,
+        }
+      );
+      const { discount } = response.data;
 
-  const applyPromoCode = () => {
-    const code = promoCode.trim().toLowerCase();
-    if (code === "mazzak10" || code === "niloy10") {
       const numericSubtotal = parseFloat(subtotal.replace(/[^0-9.-]+/g, ""));
-      const discountedAmount = numericSubtotal * 0.95;
+      const discountedAmount = numericSubtotal * (1 - discount / 100);
       setDiscountedSubtotal(discountedAmount);
       setPromoCodeSuccess(true);
-    } else if (code !== "") {
-      setPromoCodeError("Invalid promo code!");
+    } catch (error) {
+      setPromoCodeError(error.response?.data?.message || "Invalid promo code!");
     }
   };
-
   const subtotalNumber = parseFloat(
     discountedSubtotal.toString().replace(/[^0-9.-]+/g, "")
   );
@@ -111,6 +116,7 @@ const CheckoutPage = () => {
           userId: userStore._id,
           products: orderProducts,
           paymentMethod: "Online Payment",
+          promoCode: promoCode,
         };
 
         const result = await axiosPost(
@@ -151,6 +157,7 @@ const CheckoutPage = () => {
         products: orderProducts,
         transactionID, // Make sure this matches
         paymentMethod: "Cash On Delivery",
+        promoCode: promoCode,
       });
 
       await axios.put(

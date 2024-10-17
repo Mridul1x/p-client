@@ -18,7 +18,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import OrderTracking from "./OrderTracking";
-
+import ReviewModal from "../../component/ReviewModal";
+import { MdOutlineRateReview } from "react-icons/md";
 const UserOrders = () => {
   const userStore = useSelector((state) => state.user?.user);
   const token = useSelector((state) => state.user?.token);
@@ -35,6 +36,8 @@ const UserOrders = () => {
   const [pendingCount, setPendingCount] = useState(0);
   const [approvedCount, setApprovedCount] = useState(0);
   const [failedCount, setFailedCount] = useState(0);
+  const [selectedOrder, setSelectedOrder] = useState(null); // State to track the selected order for review
+  const [showModal, setShowModal] = useState(false); // State to control the modal visibility
 
   useEffect(() => {
     const fetchUserOrders = async () => {
@@ -99,6 +102,16 @@ const UserOrders = () => {
     }
   }, [userStore, navigate]);
 
+  const handleOpenModal = (order) => {
+    setSelectedOrder(order);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedOrder(null);
+    setShowModal(false);
+  };
+
   if (isLoading) {
     return <Overlay />;
   }
@@ -116,7 +129,6 @@ const UserOrders = () => {
       <div className="mb-6">
         <h2 className="text-2xl font-bold mb-2">Welcome, {userStore.name}!</h2>
       </div>
-
       {/* Display statistics */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
         <div className="bg-white shadow-md rounded-lg overflow-hidden">
@@ -158,7 +170,6 @@ const UserOrders = () => {
           </div>
         </div>
       </div>
-
       {/* Render Order Tracking for the first order
       {orders.length > 0 && (
         <OrderTracking
@@ -166,22 +177,22 @@ const UserOrders = () => {
           transactionID={orders[0].transactionID}
         />
       )} */}
-
       {orders.length > 0 ? (
         <div className="bg-white shadow-md rounded px-2 pt-6 pb-8">
           <div className="overflow-y-auto">
-            <table className="w-full mt-4 text-left table-auto">
+            <table className="w-full mt-4 text-left table">
               <thead>
                 <tr className="uppercase border-b">
-                  <th className="py-2 px-4">Order ID</th>
-                  <th className="py-2 px-4">Products</th>
-                  <th className="py-2 px-4">Quantity</th>
-                  <th className="py-2 px-4">Shipping Cost</th>
-                  <th className="py-2 px-4">Subtotal</th>
-                  <th className="py-2 px-4">Date</th>
-                  <th className="py-2 px-4">Status</th>
-                  <th className="py-2 px-4">Payment Method</th>
-                  <th className="py-2 px-4">Transaction ID</th>
+                  <th className="py-2 px-4  text-sm">Order ID</th>
+                  <th className="py-2 px-4 text-sm">Products</th>
+                  <th className="py-2 px-4 text-sm">Quantity</th>
+                  <th className="py-2 px-4 text-sm">Shipping Cost</th>
+                  <th className="py-2 px-4 text-sm">Subtotal</th>
+                  <th className="py-2 px-4 text-sm">Date</th>
+                  <th className="py-2 px-4 text-sm">Status</th>
+                  <th className="py-2 px-4 text-sm">Payment Method</th>
+                  <th className="py-2 px-4 text-sm">Transaction ID</th>
+                  <th className="py-2 px-4 text-sm">Review</th>
                 </tr>
               </thead>
               <tbody>
@@ -231,6 +242,14 @@ const UserOrders = () => {
                     <td className="py-3 px-4 whitespace-nowrap">
                       {order.transactionID}
                     </td>
+                    <td className="py-3 px-4 whitespace-nowrap">
+                      <button
+                        onClick={() => handleOpenModal(order)}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                      >
+                        <MdOutlineRateReview />
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -251,14 +270,10 @@ const UserOrders = () => {
           </Link>
         </div>
       )}
-
-      {/* Back to top button
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="fixed bottom-4 right-4 bg-white border border-gray-300 btn btn-xs rounded-md shadow-md hover:bg-gray-100 focus:outline-none"
-      >
-        Back to Top
-      </button> */}
+      {/* Review Modal */}
+      {showModal && (
+        <ReviewModal order={selectedOrder} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };
