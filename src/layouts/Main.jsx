@@ -7,6 +7,7 @@ const Main = () => {
   return (
     <div>
       <Navbar></Navbar>
+      <h1>Hello</h1>
       <Toaster
         gutter={24}
         position="bottom-center"
